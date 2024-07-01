@@ -77,27 +77,59 @@ const loginFail = () => {
     <v-row justify="space-around">
       <!-- 未登入 -->
 
+      <!-- Telegram 按鈕 Start -->
       <!-- Telegram 按鈕會被動態載入並插入在這 -->
       <div
         v-if="!isLogin"
         id="telegram-login-container"
         class="align-center d-none"
-      ></div>
-      <div v-if="!isLogin">
-        <div @click="telegramLogin" class="cursor-pointer">
+      />
+      <!-- Telegram 按鈕 End -->
+
+      <div v-if="!isLogin" class="d-flex align-center">
+        <div @click="telegramLogin" class="cursor-pointer user-area">
           <div color="dark-text">您还未登录</div>
-          <br />
           <div color="light-text">
             <v-icon>mdi-login</v-icon>
             登录
             <span>/</span>
-            註冊後查看
+            注册后查看
           </div>
+        </div>
+
+        <div class="ml-4">
+          <v-chip
+            prepend-icon="mdi-currency-usd"
+            variant="outlined"
+            size="small"
+            @click="handleDeposit"
+            class="mr-2"
+          >
+            存款
+          </v-chip>
+          <v-chip
+            prepend-icon="mdi-bank-transfer"
+            variant="outlined"
+            size="small"
+            @click="handleWithdraw"
+            class="mr-2"
+          >
+            取款
+          </v-chip>
+          <v-chip
+            prepend-icon="mdi-account-circle-outline"
+            variant="outlined"
+            size="small"
+            @click="handleProfile"
+            class="mr-2"
+          >
+            個人資料
+          </v-chip>
         </div>
       </div>
 
       <!-- 已登入 -->
-      <v-row v-if="isLogin" justify="space-around">
+      <v-row v-if="isLogin" justify="space-around" align-items="center">
         <!-- 左邊 -->
         <v-col>
           <v-chip @click="handleDeposit">{{ account }}</v-chip>
@@ -106,27 +138,68 @@ const loginFail = () => {
         </v-col>
 
         <!-- 右邊 -->
-        <v-col>
-          <v-btn color="success">完成</v-btn>
-          <v-btn color="error">失败</v-btn>
-          <v-btn @click="handleDeposit">
-            <v-icon>mdi-currency-usd</v-icon>
+        <v-col align-items="center">
+          <v-chip
+            prepend-icon="mdi-currency-usd"
+            variant="outlined"
+            size="small"
+            color="accent"
+            @click="handleDeposit"
+            class="mr-2"
+          >
             存款
-          </v-btn>
-          <v-btn @click="handleWithdraw">
-            <v-icon>mdi-bank-transfer</v-icon>
+          </v-chip>
+          <v-chip
+            prepend-icon="mdi-bank-transfer"
+            variant="outlined"
+            size="small"
+            color="accent"
+            @click="handleWithdraw"
+            class="mr-2"
+          >
             取款
-          </v-btn>
-          <v-btn @click="handleProfile">
-            <v-icon>mdi-account-circle-outline</v-icon>
+          </v-chip>
+          <v-chip
+            prepend-icon="mdi-account-circle-outline"
+            variant="outlined"
+            size="small"
+            color="accent"
+            @click="handleProfile"
+            class="mr-2"
+          >
             個人資料
-          </v-btn>
-          <v-btn @click="handleLogout">
-            <v-icon>mdi-logout</v-icon>
+          </v-chip>
+          <v-chip
+            prepend-icon="mdi-logout"
+            variant="outlined"
+            size="small"
+            color="accent"
+            @click="handleLogout"
+          >
             登出
-          </v-btn>
+          </v-chip>
         </v-col>
       </v-row>
     </v-row>
   </v-container>
 </template>
+
+<style lang="scss" scoped>
+.user-area {
+  position: relative;
+  padding-right: 1rem;
+
+  &:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    display: block;
+    width: 1px;
+    height: 75%;
+    top: 50%;
+    transform: translateY(-50%);
+    /* border-right: 1px dashed #7a80a1; */
+    border-right: 1px dashed #ffffff97;
+  }
+}
+</style>
