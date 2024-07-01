@@ -4,13 +4,18 @@ interface CustomAxiosResponse {
   trace?: string
 }
 
+const noFunction = (data: any) => data
+
 export const handleResponse = (
   res: CustomAxiosResponse,
-  successFn: any,
-  errorFn: any
+  successFn: any = noFunction,
+  errorFn: any = noFunction
 ) => {
-  if (res.code === '0') successFn(res)
-  else errorFn(res)
+  if (res.code === '0') {
+    successFn(res)
+  } else {
+    errorFn(res)
+  }
 }
 
 // const ifNofunction = (data) => {

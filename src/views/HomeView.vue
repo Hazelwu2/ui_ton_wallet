@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import Navbar from '../components/Navbar.vue'
-import Alert from '../components/Dialog/ShowAlert.vue'
+// Component
+import Navbar from '@/components/Navbar.vue'
+import Alert from '@/components/Dialog/ShowAlert.vue'
+import GameList from '@/components/GameList/GameList.vue'
+// Pinia
 import { useDialogStore } from '@/stores/dialog'
 const dialogStore = useDialogStore()
 </script>
@@ -14,5 +17,7 @@ const dialogStore = useDialogStore()
       :text="dialogStore.text"
     />
     <Navbar />
+
+    <GameList />
   </main>
 </template>
