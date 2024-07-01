@@ -14,7 +14,12 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./src/utils/types/global.d.ts"]
+    "types": ["vuetify"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/vuetify/types",
+      "./src/utils/types/global.d.ts"
+    ]
   },
   "files": [],
   "references": [

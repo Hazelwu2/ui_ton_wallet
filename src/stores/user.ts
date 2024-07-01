@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 import { playerRegisterAPI, playerLoginAPI } from '@/api/player'
-import type { PlayerRegisterData } from '@/api/player'
+import type { PlayerRegisterResponse, PlayerLoginResponse } from '@/api/player'
 
 interface UserState {
   isLogin: boolean
@@ -46,7 +46,9 @@ export const useUserStore = defineStore({
     },
 
     // 處理註冊邏輯
-    async handleRegister(user: TelegramUserData): Promise<void> {
+    async handleRegister(
+      user: TelegramUserData
+    ): Promise<PlayerRegisterResponse | undefined> {
       const params = {
         m_code: import.meta.env.VITE_M_CODE,
         account: user?.id?.toString(),
@@ -54,15 +56,26 @@ export const useUserStore = defineStore({
         password: import.meta.env.VITE_PLAYER_PASSWORD
       }
 
+      // 請求 API
       const res = await playerRegisterAPI(params)
 
-      if (res?.code === 'E1111' && res?.message === '帳號已存在') {
-        await this.handleLogin(params)
+      const accounIsExist =
+        res?.code === 'E1111' && res?.message === '帳號已存在'
+      const registerSuccess = res?.code === '0'
+      /*
+       */
+
+      // 若已註冊過帳號已存在、註冊成功，請求登入
+      if (accounIsExist || registerSuccess) {
+        const res = await this.handleLogin(params)
+        return res
       }
+
+      return res
     },
 
     // 處理登入邏輯
-    async handleLogin(params: any): Promise<void> {
+    async handleLogin(params: any): Promise<PlayerLoginResponse | undefined> {
       const res = await playerLoginAPI(params)
 
       if (res?.code === '0') {
@@ -73,6 +86,8 @@ export const useUserStore = defineStore({
         this.balance_frozen = res.result.balance_frozen
         this.vip_id = res.result.vip_id
       }
+
+      return res
     }
   }
   // as UserActions // 强制指定 actions 的类型为 UserActions

@@ -41,3 +41,20 @@ yarn test:unit
 ```sh
 yarn lint
 ```
+
+## Component
+
+### Alert
+
+```javascript
+<script setup lang="ts">
+import { useDialogStore } from '@/stores/dialog'
+
+const dialogStore = useDialogStore()
+
+dialogStore.showAlert({ icon: 'fail', text: '請重新登入' });
+dialogStore.showAlert({ icon: 'done', text: '成功' });
+dialogStore.showAlert({ icon: 'favorite', text: '收藏成功' });
+dialogStore.showAlert({ icon: 'unfavorite', text: '取消收藏成功' });
+</script>
+```

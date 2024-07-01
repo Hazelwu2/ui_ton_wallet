@@ -47,7 +47,18 @@ export interface PlayerLoginResponse {
   API
 */
 
-// 註冊
+/* 
+  註冊
+
+  註冊成功
+  {
+    "code": "0",
+    "message": "成功",
+    "result": null,
+    "trace": "2a44cfdef74fc6ce9cebe9efd22cdb41"
+  }
+
+*/
 export function playerRegisterAPI(data: PlayerRegisterData): Promise<PlayerRegisterResponse> {
   return request({
     url: '/api/v1/m/player/reg',
