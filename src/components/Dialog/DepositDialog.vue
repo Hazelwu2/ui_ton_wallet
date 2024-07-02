@@ -36,7 +36,8 @@ const openTonWallet = () => {
 // 复制钱包地址到剪贴板
 const copyWalletAddress = () => {
   const textarea = document.createElement('textarea')
-  textarea.value = walletAddress
+  textarea.value =
+    import.meta.env.VITE_DEPOSIT_WALLET_ADDRESS
   document.body.appendChild(textarea)
   textarea.select()
   document.execCommand('copy')
@@ -56,7 +57,7 @@ const copyWalletAddress = () => {
     @click:outside="dialogStore.switchDepositDialog"
   >
     <v-card>
-      <v-card-title class="headline">存款燈箱</v-card-title>
+      <v-card-title class="headline">存款</v-card-title>
       <v-card-text class="text-center">
         <qrcode-vue :value="qrCodeValue" :size="200" />
 
@@ -67,9 +68,9 @@ const copyWalletAddress = () => {
         >
           {{ walletAddress }}
         </a>
-        <v-icon @click="copyWalletAddress" class="ml-2"
-          >mdi-content-copy</v-icon
-        >
+        <div @click="copyWalletAddress">
+          <v-icon class="ml-2">mdi-content-copy</v-icon>
+        </div>
 
         <v-alert type="warning" class="mt-4">
           <ul class="text-left">
