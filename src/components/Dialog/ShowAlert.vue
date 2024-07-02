@@ -71,11 +71,14 @@ const closeDialog = () => {
   <v-dialog
     v-model="alertStatus"
     persistent
-    max-width="180"
+    max-width="300"
     @click:outside="closeDialog"
+    :style="{
+      zIndex: 3000
+    }"
   >
     <v-card
-      height="96px"
+      height="150px"
       class="d-flex align-center justify-center flex-column"
     >
       <v-icon :color="color" size="small">{{
