@@ -54,7 +54,7 @@ export interface LaunchGameParams {
   launch_game: string
   lang: string
 }
-// 
+
 export interface LaunchGameResponse {
   code: string
   message: string

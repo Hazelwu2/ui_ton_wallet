@@ -4,14 +4,15 @@ import { useUserStore } from '@/stores/user'
 import { useDialogStore } from '@/stores/dialog'
 import { storeToRefs } from 'pinia'
 import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
-import { handleResponse } from '@/utils/axios/apiUtils'
+import { handleResponse } from '@/utils/axios/resUtils'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
 
-const { isLogin, account, balance, ton_wallet } = storeToRefs(userStore)
+const { isLogin, account, balance, ton_wallet } =
+  storeToRefs(userStore)
 
 const {
   handleRegister,
@@ -44,10 +45,10 @@ const telegramLogin = async () => {
       embed: 1
     },
     async (data: TelegramUserData) => {
-      console.log(data, '这是回调数据')
       if (!data) {
-        console.error('呼叫 Telegram 發生錯誤')
-        throw new Error('telegramLogin Fn 發生錯誤：Telegram data 沒有回來')
+        throw new Error(
+          'telegramLogin Fn 發生錯誤：Telegram data 沒有回來'
+        )
       }
 
       // 註冊
@@ -87,7 +88,10 @@ const loginFail = () => {
       <!-- Telegram 按鈕 End -->
 
       <div v-if="!isLogin" class="d-flex align-center">
-        <div @click="telegramLogin" class="cursor-pointer user-area">
+        <div
+          @click="telegramLogin"
+          class="cursor-pointer user-area"
+        >
           <div color="dark-text">您还未登录</div>
           <div color="light-text">
             <v-icon>mdi-login</v-icon>
@@ -129,10 +133,16 @@ const loginFail = () => {
       </div>
 
       <!-- 已登入 -->
-      <v-row v-if="isLogin" justify="space-around" align-items="center">
+      <v-row
+        v-if="isLogin"
+        justify="space-around"
+        align-items="center"
+      >
         <!-- 左邊 -->
         <v-col>
-          <v-chip @click="handleDeposit">{{ account }}</v-chip>
+          <v-chip @click="handleDeposit">{{
+            account
+          }}</v-chip>
           <v-chip>{{ balance }}</v-chip>
           <v-chip>{{ ton_wallet }}</v-chip>
         </v-col>
