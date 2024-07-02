@@ -43,6 +43,18 @@ export interface PlayerLoginResponse {
   }
 }
 
+export interface TonWalletWithdrawData {
+  m_code: string
+  account: string
+  password: string
+  transfer_amount: number
+}
+
+export interface TonWalletWithdrawResponse {
+  code: string
+  message: string
+  trace?: string
+}
 /*
   API
 */
@@ -110,7 +122,7 @@ export function updatePlayerInfoAPI(data) {
 }
 
 // Ton 錢包下分
-export function tonWalletWithdrawAPI(data) {
+export function tonWalletWithdrawAPI(data: TonWalletWithdrawData): Promise<TonWalletWithdrawResponse> {
   return request({
     url: '/api/v1/m/trans/ton_withdraw',
     method: 'post',

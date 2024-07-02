@@ -1,18 +1,20 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 // Component
 import Navbar from '@/components/Navbar.vue'
 import GameList from '@/components/GameList/GameList.vue'
 // Dialog
 import Alert from '@/components/Dialog/ShowAlert.vue'
 import DepositDialog from '@/components/Dialog/DepositDialog.vue'
-// import WithdrawalDialog from '@/components/Dialog/WithdrawalDialog.vue'
+import WithdrawalDialog from '@/components/Dialog/WithdrawalDialog.vue'
 // import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useDialogStore } from '@/stores/dialog'
 
 const dialogStore = useDialogStore()
-const { showDepositDialog } = storeToRefs(dialogStore)
+const { showDepositDialog, showWithdrawalDialog } =
+  storeToRefs(dialogStore)
 </script>
 
 <template>
@@ -32,12 +34,12 @@ const { showDepositDialog } = storeToRefs(dialogStore)
       <DepositDialog />
     </v-dialog>
 
-    <!-- <v-dialog
-      v-model="dialogStore.showWithdrawalDialog"
+    <v-dialog
+      v-model="showWithdrawalDialog"
       max-width="600"
     >
       <WithdrawalDialog />
-    </v-dialog> -->
+    </v-dialog>
 
     <!-- <v-dialog
       v-model="dialogStore.showProfileDialog"
