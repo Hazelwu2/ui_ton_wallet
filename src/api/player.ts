@@ -1,18 +1,13 @@
 import request from '@/utils/axios/request'
-import type { AxiosResponse } from 'axios'
-/*
-  玩家相關的 API
 
-  - 玩家註冊
-  - 玩家登入
-  - 取得玩家資訊
-  - 更新玩家資訊
-  - Ton錢包下分
-*/
+enum Api {
+  Register = '/api/v1/m/player/reg',
+  Login = '/api/v1/m/player/login',
+  GetPlayerInfo = '/api/v1/m/player/m/player/info',
+  UpdatePlayerInfo = '/api/v1/m/player/m/player/update',
+  TonWalletWithdraw = '/api/v1/m/trans/ton_withdraw'
+}
 
-/*
-  Type 定義資料型態
-*/
 // 定義註冊資料
 export interface PlayerRegisterData {
   m_code: string
@@ -55,76 +50,68 @@ export interface TonWalletWithdrawResponse {
   message: string
   trace?: string
 }
-/*
-  API
-*/
 
-/* 
-  註冊
+export interface UpdatePlayerInfoParams {
+  m_code: string
+  account: string
+  password: string
+  nickname: string
+  ton_wallet: string
+}
+export interface GetPlayerInfoParams extends PlayerRegisterData {
 
-  註冊成功
-  {
-    "code": "0",
-    "message": "成功",
-    "result": null,
-    "trace": "2a44cfdef74fc6ce9cebe9efd22cdb41"
-  }
+}
 
-*/
+/** 
+ * @description: 註冊
+ */
 export function playerRegisterAPI(data: PlayerRegisterData): Promise<PlayerRegisterResponse> {
   return request({
-    url: '/api/v1/m/player/reg',
+    url: Api.Register,
     method: 'post',
     data
   })
 }
 
-/* 
-  登入
-  {
-    "code": "0",
-    "message": "成功",
-    "result": {
-        "account": "qn6358617252",
-        "balance": 0,
-        "balance_frozen": 0,
-        "ton_wallet": "UQCEWliDrPXL7lxtKtcHSyCofPV4AibCGgM8VrexQxgeMMIe",
-        "vip_id": 0,
-        "status": "1"
-    },
-    "trace": "5b1fab9128b4cdcada41c7ca505fad58"
-  }
-*/
+/** 
+ * @description: 登入
+ */
 export function playerLoginAPI(data: PlayerRegisterData): Promise<PlayerLoginResponse> {
   return request({
-    url: '/api/v1/m/player/login',
+    url: Api.Login,
     method: 'post',
     data
   })
 }
 
-// 取得玩家資訊
-export function getPlayerInfoAPI(data) {
+/** 
+ * @description: 取得玩家資訊
+ */
+export function getPlayerInfoAPI(data: GetPlayerInfoParams) {
   return request({
-    url: '/api/v1/m/player/m/player/info',
+    url: Api.GetPlayerInfo,
     method: 'post',
     data
   })
 }
 
-// 更新玩家資訊
-export function updatePlayerInfoAPI(data) {
+/** 
+ * @description: 更新玩家資訊
+ */
+export function updatePlayerInfoAPI(data: UpdatePlayerInfoParams) {
   return request({
-    url: '/api/v1/m/player/m/player/update',
+    url: Api.UpdatePlayerInfo,
     method: 'post',
     data
   })
 }
 
-// Ton 錢包下分
+/** 
+ * @description: Ton 錢包下分
+ */
 export function tonWalletWithdrawAPI(data: TonWalletWithdrawData): Promise<TonWalletWithdrawResponse> {
   return request({
-    url: '/api/v1/m/trans/ton_withdraw',
+    url: Api.TonWalletWithdraw,
     method: 'post',
     data
   })
