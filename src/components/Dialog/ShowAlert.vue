@@ -20,7 +20,7 @@ const props = defineProps({
 
 // Pinia Vuex
 const dialogStore = useDialogStore()
-const { dialogStatus } = storeToRefs(dialogStore)
+const { alertStatus } = storeToRefs(dialogStore)
 
 // 根据 icon 属性获取相应的颜色类名
 const color = computed(() => {
@@ -69,7 +69,7 @@ const closeDialog = () => {
 
 <template>
   <v-dialog
-    v-model="dialogStatus"
+    v-model="alertStatus"
     persistent
     max-width="180"
     @click:outside="closeDialog"
@@ -78,8 +78,12 @@ const closeDialog = () => {
       height="96px"
       class="d-flex align-center justify-center flex-column"
     >
-      <v-icon :color="color" size="small">{{ iconUrl }}</v-icon>
-      <span v-show="text" class="mt-2 px-2 subtitle-2 text-center textw--text"
+      <v-icon :color="color" size="small">{{
+        iconUrl
+      }}</v-icon>
+      <span
+        v-show="text"
+        class="mt-2 px-2 subtitle-2 text-center textw--text"
         >{{ text }}
       </span>
     </v-card>

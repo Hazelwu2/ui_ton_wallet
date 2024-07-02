@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, ref, Ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useDialogStore } from '@/stores/dialog'
 import { storeToRefs } from 'pinia'
@@ -10,17 +10,15 @@ import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
-
 const { isLogin, account, balance, ton_wallet } =
   storeToRefs(userStore)
-
+// Action
 const {
   handleRegister,
-  handleLogin,
-  handleDeposit,
-  handleWithdraw,
-  handleProfile,
-  handleLogout
+  handleLogin
+  // handleWithdraw,
+  // handleProfile,
+  // handleLogout
 } = userStore
 
 // 全局定义 onTelegramAuth 函数，确保其能被 Telegram 脚本调用
@@ -70,6 +68,18 @@ const loginFail = () => {
     icon: 'fail',
     text: '失敗'
   })
+}
+
+const handleDeposit = () => {
+  dialogStore.switchDepositDialog()
+}
+
+const handleWithdraw = () => {
+  dialogStore.switchWithdrawalDialog()
+}
+
+const handleProfile = () => {
+  dialogStore.switchProfileDialog()
 }
 </script>
 
@@ -140,9 +150,7 @@ const loginFail = () => {
       >
         <!-- 左邊 -->
         <v-col>
-          <v-chip @click="handleDeposit">{{
-            account
-          }}</v-chip>
+          <v-chip> {{ account }}</v-chip>
           <v-chip>{{ balance }}</v-chip>
           <v-chip>{{ ton_wallet }}</v-chip>
         </v-col>
