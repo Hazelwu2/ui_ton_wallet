@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia'
 import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
 import { handleResponse } from '@/utils/axios/resUtils'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
+import type { PlayerRegisterResponse } from '@/api/player'
 
 // Pinia Vuex
 const userStore = useUserStore()
@@ -13,11 +14,11 @@ const dialogStore = useDialogStore()
 const { isLogin, account, balance, ton_wallet } =
   storeToRefs(userStore)
 // Action
-const { handleRegister, handleLogin } = userStore
+const { handleRegister } = userStore
 
 // 全局定义 onTelegramAuth 函数，确保其能被 Telegram 脚本调用
 window.onTelegramAuth = (user: TelegramUserData) => {
-  userStore.handleRegister(user) // 调用用户登录逻辑
+  handleRegister(user) // 调用用户登录逻辑
 }
 
 onMounted(() => {
@@ -36,7 +37,7 @@ const telegramLogin = async () => {
       request_access: 'write',
       embed: 1
     },
-    async (data: TelegramUserData) => {
+    async (data: TelegramUserData | undefined) => {
       if (!data) {
         throw new Error(
           'telegramLogin Fn 發生錯誤：Telegram data 沒有回來'
@@ -44,7 +45,9 @@ const telegramLogin = async () => {
       }
 
       // 註冊
-      const res = await userStore.handleRegister(data)
+      const res = (await userStore.handleRegister(
+        data
+      )) as PlayerRegisterResponse
       handleResponse(res, loginSuccess, loginFail)
     }
   )
