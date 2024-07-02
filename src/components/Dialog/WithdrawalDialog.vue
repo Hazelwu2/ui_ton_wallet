@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
@@ -18,7 +18,6 @@ const tonToUsdRate = ref(0)
 // Dummy API endpoint for demonstration
 const fetchTonToUsdRate = async () => {
   try {
-    // Replace with actual API endpoint for Ton to USD exchange rate
     const response = await fetch(
       'https://tonapi.io/v2/rates?tokens=ton&currencies=usd'
     )

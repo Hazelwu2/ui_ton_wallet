@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, nextTick, ref, Ref } from 'vue'
+import { onMounted, nextTick } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useDialogStore } from '@/stores/dialog'
 import { storeToRefs } from 'pinia'

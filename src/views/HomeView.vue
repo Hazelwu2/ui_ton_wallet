@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 // Component
-import Navbar from '@/components/Navbar.vue'
+import AppNavbar from '@/components/AppNavbar.vue'
 import GameList from '@/components/GameList/GameList.vue'
 // Dialog
 import Alert from '@/components/Dialog/ShowAlert.vue'
@@ -25,7 +24,7 @@ const { showDepositDialog, showWithdrawalDialog } =
       :icon="dialogStore.icon"
       :text="dialogStore.text"
     />
-    <Navbar />
+    <AppNavbar />
 
     <GameList />
 
