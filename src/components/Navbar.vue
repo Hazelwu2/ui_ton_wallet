@@ -13,13 +13,7 @@ const dialogStore = useDialogStore()
 const { isLogin, account, balance, ton_wallet } =
   storeToRefs(userStore)
 // Action
-const {
-  handleRegister,
-  handleLogin
-  // handleWithdraw,
-  // handleProfile,
-  // handleLogout
-} = userStore
+const { handleRegister, handleLogin } = userStore
 
 // 全局定义 onTelegramAuth 函数，确保其能被 Telegram 脚本调用
 window.onTelegramAuth = (user: TelegramUserData) => {
@@ -74,12 +68,17 @@ const handleDeposit = () => {
   dialogStore.switchDepositDialog()
 }
 
-const handleWithdraw = () => {
+const handleWithdrawal = () => {
   dialogStore.switchWithdrawalDialog()
 }
 
 const handleProfile = () => {
   dialogStore.switchProfileDialog()
+}
+
+// 點擊登出
+const handleLogout = () => {
+  userStore.handleLogout()
 }
 </script>
 
@@ -125,7 +124,7 @@ const handleProfile = () => {
             prepend-icon="mdi-bank-transfer"
             variant="outlined"
             size="small"
-            @click="handleWithdraw"
+            @click="handleWithdrawal"
             class="mr-2"
           >
             取款
@@ -172,7 +171,7 @@ const handleProfile = () => {
             variant="outlined"
             size="small"
             color="accent"
-            @click="handleWithdraw"
+            @click="handleWithdrawal"
             class="mr-2"
           >
             取款
