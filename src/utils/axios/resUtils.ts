@@ -1,7 +1,8 @@
-interface CustomAxiosResponse {
+export interface CustomAxiosResponse<T = any> {
   code?: string
   message?: string
   trace?: string
+  result?: T
 }
 
 const noFunction = (data: any) => data

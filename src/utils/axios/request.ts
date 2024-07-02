@@ -1,11 +1,5 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosResponse } from 'axios'
-
-// 自定義 Response
-interface CustomAxiosResponse<T = any> extends AxiosResponse<T> {
-  code?: string
-  message?: string
-}
+import type { AxiosInstance } from 'axios'
 
 // create an axios instance
 const service: AxiosInstance = axios.create({

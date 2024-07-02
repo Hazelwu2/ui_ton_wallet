@@ -1,21 +1,29 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
 import { getGameListAPI, launchGameAPI } from '@/api/game'
-import type { LaunchGameResponse, GameListResponse } from '@/api/game'
+import type {
+  LaunchGameResponse,
+  GameListResponse,
+  GameList,
+  GameListResult
+} from '@/api/game'
+import type { CustomAxiosResponse } from '@/utils/axios/resUtils'
 
 
 export const useGameStore = defineStore({
   id: 'game',
   state: () => ({
-    gameList: [],
-    page_size: 8,
+    gameList: [] as GameList[],
+    path: '',
+    page_size: 20,
     page_num: 1,
-    vendor_code: 'xgd'
+    vendor_code: 'xgd',
+    scrollToBottom: false
   }),
 
   actions: {
     // 取得遊戲清單
-    async getGameList(): Promise<GameListResponse | undefined> {
+    async getGameList(): Promise<CustomAxiosResponse<GameListResult>> {
       const params = {
         m_code: import.meta.env.VITE_M_CODE,
         lang: 'zh',
@@ -25,9 +33,26 @@ export const useGameStore = defineStore({
       }
 
       // 請求 API
-      const res = await getGameListAPI(params)
+      const res = await getGameListAPI(params) as GameListResponse
 
-      return res
+      // 判斷是否還有下一頁
+      if (res.result) {
+        if (res.result.path) this.path = res.result.path
+
+        const isNoData = !res.result.data || res.result.data.length === 0
+        if (isNoData) {
+          this.$patch({
+            scrollToBottom: true
+          });
+        } else {
+          this.$patch({
+            scrollToBottom: false,
+            page_num: this.page_num + 1
+          });
+        }
+      }
+
+      return res;
     },
 
     // 啟動遊戲
@@ -45,7 +70,7 @@ export const useGameStore = defineStore({
         lang: "zh"
       }
 
-      const res = await launchGameAPI(params)
+      const res = await launchGameAPI(params) as LaunchGameResponse
       return res
     }
   }

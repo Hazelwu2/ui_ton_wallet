@@ -1,45 +1,70 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import { useGameStore } from '@/stores/game'
 import { useDialogStore } from '@/stores/dialog'
-import { handleResponse } from '@/utils/axios/apiUtils'
-import type { GameList } from '@/api/game'
+import { useUserStore } from '@/stores/user'
+import { handleResponse } from '@/utils/axios/resUtils'
+import type {
+  GameList,
+  GameListResponse,
+  LaunchGameResponse
+} from '@/api/game'
 
 // Pinia Vuex
 const gameStore = useGameStore()
 const dialogStore = useDialogStore()
+const userStore = useUserStore()
 
 // Data
 const gameList = ref<GameList[]>([])
+const gameListContainer = ref<HTMLElement | null>(null)
+
 const defaultImage = ref(
   'https://www.inprohub.vip/uploads/images/8f9464f859916bf88d575885e61994d6.jpg'
 )
 
 const launchGame = async (game_code: string) => {
-  console.log('啟動遊戲:', game_code)
+  if (!game_code)
+    throw new Error('launchGame Fn 缺少參數 game_code')
+
   const res = await gameStore.launchGame(game_code)
-  handleResponse(res, launchGameSuccess, getGameListFail)
+  handleResponse(
+    res as LaunchGameResponse,
+    launchGameSuccess,
+    launchGameFail
+  )
 }
 
 const getGameList = async () => {
   const res = await gameStore.getGameList()
-  handleResponse(res, getGameListSuccess(res), getGameListFail)
+  handleResponse(
+    res as GameListResponse,
+    getGameListSuccess,
+    getGameListFail
+  )
 }
 
 const getGameListSuccess = (res: any) => {
-  if (Array.isArray(res?.result?.data) && res?.result?.data.length > 0) {
-    for (let i = 0; i < res?.result.data.length; i++) {
-      gameList.value.push(res.result.data[i])
-    }
+  if (
+    Array.isArray(res?.result?.data) &&
+    res?.result?.data.length > 0
+  ) {
+    gameList.value.push(...res.result.data)
+  } else {
+    removeScrollListener()
   }
 }
-const getGameListFail = (res) => {
-  console.log('res', res)
+
+const getGameListFail = (res: GameListResponse) => {
   dialogStore.showAlert({
     icon: 'fail',
-    text: res.code + res.message
+    text:
+      res?.code && res?.message
+        ? res.code + res.message
+        : ''
   })
 }
+
 const launchGameSuccess = (gameUrl: string) => {
   const windowObj = window.open('', '_blank')
   if (!windowObj) throw new Error('windowObj 是 null')
@@ -47,48 +72,140 @@ const launchGameSuccess = (gameUrl: string) => {
   windowObj.location.href = gameUrl
 }
 
+const launchGameFail = (res: LaunchGameResponse) => {
+  if (!userStore.account) {
+    dialogStore.showAlert({
+      icon: 'fail',
+      text: '請先登入'
+    })
+    return
+  }
+
+  if (res.code && res.message) {
+    dialogStore.showAlert({
+      icon: 'fail',
+      text: res.code + res.message
+    })
+    return
+  }
+
+  dialogStore.showAlert({
+    icon: 'fail',
+    text: ''
+  })
+}
+
+/**
+ * 偵測滾動到底部的原理：
+  1. scrollTop：滾動條距離頂部的距離。
+  2. clientHeight：可見區域的高度。
+  3. scrollHeight：滾動區域的總高度。
+
+  當 scrollTop + clientHeight 等於或大於 scrollHeight 時
+  表示已經滾動到底部。
+ */
+
+const onScroll = async () => {
+  if (!gameListContainer.value) return
+
+  const { scrollTop, clientHeight, scrollHeight } =
+    gameListContainer.value
+
+  // 偵測是否有滑到最底部
+  if (scrollTop + clientHeight >= scrollHeight) {
+    await getGameList()
+  }
+}
+
+const addScrollListener = () => {
+  if (gameListContainer.value) {
+    gameListContainer.value.addEventListener(
+      'scroll',
+      onScroll
+    )
+  }
+}
+
+const removeScrollListener = () => {
+  if (gameListContainer.value) {
+    gameListContainer.value.removeEventListener(
+      'scroll',
+      onScroll
+    )
+  }
+}
+
 onMounted(async () => {
-  // TODO: 懶加載
-  await getGameList()
-  gameStore.page_num++
-  await getGameList()
+  await nextTick() // 確保 DOM 已經更新
+  if (gameListContainer.value) {
+    addScrollListener()
+    await getGameList()
+  }
+})
+
+onUnmounted(() => {
+  removeScrollListener()
 })
 </script>
 
 <template>
-  <v-row class="py-2 mt-4">
-    <!-- {{ gameList }} -->
-    <v-col
-      cols="4"
-      v-for="game in gameList"
-      :key="game?.launch_code"
-      class="px-1 py-1"
-    >
-      <div class="overflow-hidden shadow-round-container">
-        <!-- 遊戲圖片 -->
-        <v-img
-          :src="game?.pic ? game.pic : defaultImage"
-          height="110"
-          class="rounded"
-          @click="launchGame(game.launch_code)"
-        >
-          <!-- <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular indeterminate color="primary" />
-            </v-row>
-          </template> -->
-        </v-img>
+  <div class="game-list-container" ref="gameListContainer">
+    <v-row class="py-2 mt-4">
+      <v-col
+        cols="6"
+        sm="4"
+        v-for="game in gameList"
+        :key="game?.launch_code"
+        class="px-1 py-1"
+      >
+        <div class="overflow-hidden shadow-round-container">
+          <!-- 遊戲圖片 -->
+          <v-img
+            :src="
+              game?.pic
+                ? gameStore.path + game.pic
+                : defaultImage
+            "
+            height="110"
+            class="rounded"
+            @click="launchGame(game.launch_code)"
+          />
 
-        <!-- 遊戲敘述 -->
-        <div class="description d-flex align-center py-2">
-          <span class="description__name subtitle-2">
-            {{ game?.name }}
-          </span>
-          <v-spacer />
+          <!-- 遊戲敘述 -->
+          <div class="description d-flex align-center py-2">
+            <span class="description__name subtitle-2">
+              {{ game?.name }}
+            </span>
+            <v-spacer />
+          </div>
         </div>
-      </div>
-    </v-col>
-  </v-row>
+      </v-col>
+
+      <v-col
+        v-if="gameStore.scrollToBottom"
+        cols="12"
+        class="text-center"
+      >
+        <v-chip>已經滑到最底囉</v-chip>
+      </v-col>
+      <v-col
+        v-else
+        cols="6"
+        sm="4"
+        class="px-1 py-1 justify-center"
+        v-for="i in 7"
+        :key="i"
+      >
+        <div class="overflow-hidden shadow-round-container">
+          <v-skeleton-loader
+            max-width="270"
+            :elevation="5"
+            type="card"
+          />
+        </div>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -97,5 +214,10 @@ onMounted(async () => {
     width: 100%;
     text-align: center;
   }
+}
+
+.game-list-container {
+  height: 80vh;
+  overflow-y: auto;
 }
 </style>
