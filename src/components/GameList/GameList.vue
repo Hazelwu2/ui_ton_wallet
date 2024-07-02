@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  nextTick,
+  computed
+} from 'vue'
 import { useGameStore } from '@/stores/game'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
@@ -19,15 +25,29 @@ const userStore = useUserStore()
 const gameList = ref<GameList[]>([])
 const gameListContainer = ref<HTMLElement | null>(null)
 
-const defaultImage = ref(
-  'https://www.inprohub.vip/uploads/images/8f9464f859916bf88d575885e61994d6.jpg'
-)
+// 預設遊戲封面
+const defaultImages = [
+  '/images/game-cover1.jpg',
+  '/images/game-cover2.jpg',
+  '/images/game-cover3.jpg'
+]
 
-const launchGame = async (game_code: string) => {
-  if (!game_code)
-    throw new Error('launchGame Fn 缺少參數 game_code')
+// 隨機產生 0,1,2 數字
+const getRandomArrayElement = () => {
+  const array = [0, 1, 2]
+  const randomIndex = Math.floor(
+    Math.random() * array.length
+  )
+  return array[randomIndex]
+}
 
-  const res = await gameStore.launchGame(game_code)
+const launchGame = async (
+  launchCode: string | undefined
+) => {
+  if (!launchCode)
+    throw new Error('launchGame Fn 缺少參數 launchCode')
+
+  const res = await gameStore.launchGame(launchCode)
   handleResponse(
     res as LaunchGameResponse,
     launchGameSuccess,
@@ -139,6 +159,8 @@ onMounted(async () => {
   await nextTick() // 確保 DOM 已經更新
   if (gameListContainer.value) {
     addScrollListener()
+    // 重整後需要將頁數還原
+    gameStore.page_num = 1
     await getGameList()
   }
 })
@@ -192,12 +214,13 @@ onUnmounted(() => {
             :src="
               game?.pic
                 ? gameStore.path + game.pic
-                : defaultImage
+                : defaultImages[getRandomArrayElement()]
             "
-            height="110"
+            cover
             class="rounded"
-            @click="launchGame(game.launch_code)"
-          />
+            @click="launchGame(game?.launch_code)"
+          >
+          </v-img>
 
           <!-- 遊戲敘述 -->
           <div class="description d-flex align-center py-2">
