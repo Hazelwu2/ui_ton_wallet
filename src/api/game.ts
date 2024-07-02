@@ -51,7 +51,7 @@ export interface GameListResponse {
 export interface LaunchGameParams {
   m_code: string
   account: string
-  launch_game: string
+  launch_code: string
   lang: string
 }
 

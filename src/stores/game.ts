@@ -66,7 +66,7 @@ export const useGameStore = defineStore({
       const params = {
         m_code: import.meta.env.VITE_M_CODE,
         account: userStore.account,
-        launch_game: game_code,
+        launch_code: game_code,
         lang: "zh"
       }
 

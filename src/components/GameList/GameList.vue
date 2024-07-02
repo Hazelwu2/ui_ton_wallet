@@ -151,6 +151,34 @@ onUnmounted(() => {
 <template>
   <div class="game-list-container" ref="gameListContainer">
     <v-row class="py-2 mt-4">
+      <v-col cols="12" class="px-1 py-1">
+        <div
+          class="banner overflow-hidden shadow-round-container"
+          :style="{
+            backgroundImage: `url('/images/xgd-banner.png')`
+          }"
+        >
+          <div
+            class="position-relative rounded"
+            :style="{
+              width: '100%',
+              height: '100%'
+            }"
+          >
+            <!-- 遊戲圖片 -->
+            <v-img
+              class="banner__img position-absolute rounded"
+              :src="`/images/xgd-logo.png`"
+            />
+            <strong class="banner__text position-absolute">
+              新高登棋牌
+            </strong>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+
+    <v-row class="py-2 mt-4">
       <v-col
         cols="6"
         sm="4"
@@ -219,5 +247,40 @@ onUnmounted(() => {
 .game-list-container {
   height: 80vh;
   overflow-y: auto;
+}
+
+.banner {
+  background-size: cover;
+  background-color: white;
+  height: 110px;
+
+  @media screen and (min-width: 568px) {
+    background-size: cover;
+    height: 180px;
+  }
+
+  &__img {
+    width: 5rem;
+    height: 5rem;
+    left: 3rem;
+    top: 0rem;
+
+    @media screen and (min-width: 568px) {
+      top: 30px;
+      left: 7.5rem;
+    }
+  }
+
+  &__text {
+    font-size: 3vw;
+    color: #333;
+    top: 4.2rem;
+    left: 4rem;
+
+    @media screen and (min-width: 568px) {
+      left: 110px;
+      top: 100px;
+    }
+  }
 }
 </style>
