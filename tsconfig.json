@@ -18,8 +18,8 @@
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/vuetify/types",
-      "./src/utils/types/global.d.ts",
-      "./src/utils/types/vuetify-extensions.d.ts"
+      "./src/types/global.d.ts",
+      "./src/types/vuetify-extensions.d.ts"
     ]
   },
   "files": [],
