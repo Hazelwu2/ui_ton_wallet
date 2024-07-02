@@ -73,6 +73,8 @@ export const useGameStore = defineStore({
       const res = await launchGameAPI(params) as LaunchGameResponse
       return res
     }
-  }
+  },
+
+  persist: true,
 
 })

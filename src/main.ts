@@ -1,7 +1,7 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import pinia from './stores'
 
 // UI Library: Vuetify
 import vuetify from '@/plugins/vuetify'
@@ -11,7 +11,7 @@ import router from './router'
 
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(vuetify)
 

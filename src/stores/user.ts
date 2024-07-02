@@ -1,7 +1,16 @@
 import { defineStore } from 'pinia'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
-import { playerRegisterAPI, playerLoginAPI } from '@/api/player'
-import type { PlayerRegisterResponse, PlayerLoginResponse } from '@/api/player'
+import {
+  playerRegisterAPI, playerLoginAPI,
+  tonWalletWithdrawAPI
+} from '@/api/player'
+import type {
+  TonWalletWithdrawResponse,
+  PlayerRegisterResponse,
+  PlayerLoginResponse
+} from '@/api/player'
+import type { CustomAxiosResponse } from '@/utils/axios/resUtils'
+
 
 interface UserState {
   isLogin: boolean
@@ -24,18 +33,36 @@ export const useUserStore = defineStore({
   }),
 
   actions: {
+    ifUserIsLogin() {
+      if (this.isLogin) return true
+
+      return false
+    },
+
     handleDeposit() {
       console.log('Deposit clicked')
-      // 可以在这里编写存款逻辑
     },
-    handleWithdraw() {
-      console.log('Withdraw clicked')
-      // 可以在这里编写取款逻辑
+
+    async handleWithdraw(transfer_amount: number): Promise<CustomAxiosResponse<TonWalletWithdrawResponse>> {
+      if (!this.account) throw new Error('handleWithdraw 發生錯誤：缺少參數 account')
+
+      const params = {
+        m_code: import.meta.env.VITE_M_CODE,
+        account: this.account,
+        password: import.meta.env.VITE_PLAYER_PASSWORD,
+        transfer_amount
+      }
+
+      // 請求 API
+      const res = await tonWalletWithdrawAPI(params) as TonWalletWithdrawResponse
+      return res
     },
+
     handleProfile() {
       console.log('Profile clicked')
       // 可以在这里编写个人资料跳转逻辑
     },
+
     handleLogout() {
       this.isLogin = false
       this.account = ''
@@ -89,6 +116,7 @@ export const useUserStore = defineStore({
 
       return res
     }
-  }
-  // as UserActions // 强制指定 actions 的类型为 UserActions
+  },
+
+  persist: true,
 })
