@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
@@ -12,8 +12,6 @@ const dialogStore = useDialogStore()
 const { showWithdrawalDialog } = storeToRefs(dialogStore)
 
 // Data
-const walletAddress = import.meta.env
-  .VITE_DEPOSIT_WALLET_ADDRESS
 const transferAmount = ref(0)
 const tonToUsdRate = ref(0)
 
@@ -70,9 +68,10 @@ onMounted(() => {
       <v-card-text>
         <!-- 錢包地址輸入 -->
         <v-text-field
-          v-model="walletAddress"
+          v-model="userStore.ton_wallet"
           label="錢包地址"
           outlined
+          disabled
         ></v-text-field>
 
         <!-- 轉帳金額輸入 -->
@@ -85,8 +84,13 @@ onMounted(() => {
 
         <!-- 顯示 Ton 到 USD 匯率 -->
         <span class="caption"
-          >約為
-          {{ transferAmount * tonToUsdRate }} USD</span
+          >1 TON ≈ {{ tonToUsdRate.toFixed(2) }}</span
+        >
+        <br />
+        <span class="caption"
+          >{{ transferAmount }} Ton ≈
+          {{ (transferAmount * tonToUsdRate).toFixed(2) }}
+          USD</span
         >
       </v-card-text>
 
