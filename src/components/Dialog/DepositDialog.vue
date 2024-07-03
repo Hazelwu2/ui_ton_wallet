@@ -35,18 +35,24 @@ const openTonWallet = () => {
 
 // 复制钱包地址到剪贴板
 const copyWalletAddress = () => {
-  const textarea = document.createElement('textarea')
-  textarea.value =
-    import.meta.env.VITE_DEPOSIT_WALLET_ADDRESS
-  document.body.appendChild(textarea)
-  textarea.select()
-  document.execCommand('copy')
-  document.body.removeChild(textarea)
-  dialogStore.showAlert({
-    icon: 'done',
-    text: '钱包地址已复制到剪贴板'
-  })
+  navigator.clipboard
+    .writeText(import.meta.env.VITE_DEPOSIT_WALLET_ADDRESS)
+    .then(() => {
+      dialogStore.showAlert({
+        icon: 'done',
+        text: '钱包地址已复制到剪贴板'
+      })
+    })
 }
+
+const warningTextList = [
+  '请确认钱包地址是否正确。',
+  '错误的钱包地址可能导致资金无法找回。',
+  '区块链转帐是不可撤回的，请确保所有信息正确无误。',
+  '请勿向不明来源的钱包地址转帐，避免遭受诈骗或资金损失。',
+  '确认您要转帐的金额是否在允许的范围内。',
+  '转帐过程中可能会产生网络费用，请确保余额充足以支付这些费用。'
+]
 </script>
 
 <template>
@@ -68,24 +74,20 @@ const copyWalletAddress = () => {
         >
           {{ walletAddress }}
         </a>
-        <div @click="copyWalletAddress">
+        <div
+          @click="copyWalletAddress"
+          class="cursor-pointer"
+        >
           <v-icon class="ml-2">mdi-content-copy</v-icon>
         </div>
 
         <v-alert type="warning" class="mt-4">
           <ul class="text-left">
-            <li>
-              請確認錢包地址是否正確。錯誤的錢包地址可能導致資金無法找回。
-            </li>
-            <li>
-              區塊鏈轉帳是不可撤回的，請確保所有信息正確無誤。
-            </li>
-            <li>
-              請勿向不明來源的錢包地址轉帳，避免遭受詐騙或資金損失。
-            </li>
-            <li>確認您要轉帳的金額是否在允許的範圍內。</li>
-            <li>
-              轉帳過程中可能會產生網絡費用，請確保餘額充足以支付這些費用。
+            <li
+              v-for="(item, i) in warningTextList"
+              :key="i"
+            >
+              {{ item }}
             </li>
           </ul>
         </v-alert>
