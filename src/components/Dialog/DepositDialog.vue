@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import QrcodeVue from 'qrcode.vue'
 import { useDialogStore } from '@/stores/dialog'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
 // Pinia Vuex
 const dialogStore = useDialogStore()
+const userStore = useUserStore()
+const { deposit_ton_wallet } = userStore
+
 const { showDepositDialog } = storeToRefs(dialogStore)
 
 const PRE_FIX = 'ton://transfer/'
-const walletAddress = import.meta.env
-  .VITE_DEPOSIT_WALLET_ADDRESS
-const qrCodeValue = `${PRE_FIX}${walletAddress}`
+const qrCodeValue = `${PRE_FIX}${deposit_ton_wallet}`
 // 生成 Ton Wallet 的 URI 链接
-const tonWalletUri = `ton://transfer?address=${walletAddress}`
+const tonWalletUri = `ton://transfer?address=${deposit_ton_wallet}`
 
 // 打开 Ton Wallet 或 Ton Keeper
 const openTonWallet = () => {
@@ -36,7 +38,7 @@ const openTonWallet = () => {
 // 复制钱包地址到剪贴板
 const copyWalletAddress = () => {
   navigator.clipboard
-    .writeText(import.meta.env.VITE_DEPOSIT_WALLET_ADDRESS)
+    .writeText(deposit_ton_wallet)
     .then(() => {
       dialogStore.showAlert({
         icon: 'done',
@@ -72,7 +74,7 @@ const warningTextList = [
           target="_blank"
           style="cursor: pointer"
         >
-          {{ walletAddress }}
+          {{ deposit_ton_wallet }}
         </a>
         <div
           @click="copyWalletAddress"
