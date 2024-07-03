@@ -2,21 +2,31 @@ import { defineStore } from 'pinia'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 import {
   playerRegisterAPI, playerLoginAPI,
-  tonWalletWithdrawAPI
+  tonWalletWithdrawAPI,
+  updatePlayerInfoAPI,
+  getPlayerInfoAPI
 } from '@/api/player'
+
 import type {
   TonWalletWithdrawResponse,
   PlayerRegisterResponse,
-  PlayerLoginResponse
+  PlayerLoginResponse,
+  UpdatePlayerInfoParams,
+  UpdatePlayerInfoResponse,
+  GetPlayerInfoParams,
+  GetPlayerInfoResponse,
 } from '@/api/player'
-import type { CustomAxiosResponse } from '@/utils/axios/resUtils'
 
 
 interface UserState {
   isLogin: boolean
-  account?: string
-  balance?: number
-  ton_wallet?: string
+  account: string
+  m_code: string
+  password: string,
+  nickname?: string
+  balance: number
+  withdraw_ton_wallet: string
+  deposit_ton_wallet: string
   balance_frozen?: number
   vip_id?: number
 }
@@ -25,9 +35,13 @@ export const useUserStore = defineStore({
   id: 'user',
   state: (): UserState => ({
     isLogin: false,
+    m_code: import.meta.env.m_code,
+    password: import.meta.env.VITE_PLAYER_PASSWORD,
     account: '',
     balance: 0,
-    ton_wallet: '',
+    withdraw_ton_wallet: '',
+    deposit_ton_wallet: '',
+    nickname: '',
     balance_frozen: 0,
     vip_id: 0
   }),
@@ -43,7 +57,7 @@ export const useUserStore = defineStore({
       console.log('Deposit clicked')
     },
 
-    async handleWithdraw(transfer_amount: number): Promise<CustomAxiosResponse<TonWalletWithdrawResponse>> {
+    async handleWithdraw(transfer_amount: number): Promise<TonWalletWithdrawResponse | undefined> {
       if (!this.account) throw new Error('handleWithdraw 發生錯誤：缺少參數 account')
 
       const params = {
@@ -58,6 +72,41 @@ export const useUserStore = defineStore({
       return res
     },
 
+    async updatePlayerInfo(params: UpdatePlayerInfoParams): Promise<UpdatePlayerInfoResponse | undefined> {
+      // 調用 API 更新個人資料
+      try {
+        // API 更新玩家資料
+        const res = await updatePlayerInfoAPI(params)
+
+        return res
+      } catch (error) {
+        console.error('更新失敗', error)
+      }
+    },
+
+    // 調用 API 取得個人資料  
+    async getPlayerInfo(): Promise<GetPlayerInfoResponse | undefined> {
+      try {
+        const params: GetPlayerInfoParams = {
+          m_code: import.meta.env.VITE_M_CODE,
+          account: this.account,
+          password: this.password
+        }
+
+        // API 取得玩家資料
+        const res = await getPlayerInfoAPI(params)
+
+        // 更新 state 中的資料
+        if (res?.result && res?.result?.withdraw_ton_wallet) {
+          this.withdraw_ton_wallet = res?.result?.withdraw_ton_wallet
+        }
+
+        return res
+      } catch (error) {
+        console.error('更新失敗', error)
+      }
+    },
+
     handleProfile() {
       console.log('Profile clicked')
       // 可以在这里编写个人资料跳转逻辑
@@ -68,7 +117,8 @@ export const useUserStore = defineStore({
       this.account = ''
       this.balance = 0
       this.balance_frozen = 0
-      this.ton_wallet = ''
+      this.withdraw_ton_wallet = ''
+      this.deposit_ton_wallet = ''
       this.vip_id = 0
     },
 
@@ -107,10 +157,11 @@ export const useUserStore = defineStore({
 
       if (res?.code === '0') {
         this.isLogin = true
-        this.account = res.result.account
-        this.balance = res.result.balance
-        this.ton_wallet = res.result.ton_wallet
-        this.balance_frozen = res.result.balance_frozen
+        this.account = res.result.account ?? ''
+        this.balance = res.result.balance ?? 0
+        this.deposit_ton_wallet = res.result.deposit_ton_wallet ?? ''
+        this.withdraw_ton_wallet = res.result.withdraw_ton_wallet ?? ''
+        this.balance_frozen = res.result.balance_frozen ?? 0
         this.vip_id = res.result.vip_id
       }
 

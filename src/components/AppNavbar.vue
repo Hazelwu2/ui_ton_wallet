@@ -14,8 +14,7 @@ import type { PlayerRegisterResponse } from '@/api/player'
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
-const { isLogin, account, balance, ton_wallet } =
-  storeToRefs(userStore)
+const { isLogin, account, balance } = storeToRefs(userStore)
 // Action
 const { handleRegister, ifUserIsLogin } = userStore
 const { showAlert } = dialogStore
@@ -183,9 +182,17 @@ const handleLogout = async () => {
       >
         <!-- 左邊 -->
         <v-col>
-          <v-chip> {{ account }}</v-chip>
-          <v-chip>{{ balance }}</v-chip>
-          <v-chip>{{ ton_wallet }}</v-chip>
+          <v-chip>
+            <v-icon class="mr-2">
+              mdi-comment-account-outline
+            </v-icon>
+            {{ account }}
+          </v-chip>
+          <v-chip>
+            <v-icon
+              >mdi-wallet-outline ${{ balance }}</v-icon
+            >
+          </v-chip>
         </v-col>
 
         <!-- 右邊 -->

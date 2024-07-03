@@ -67,7 +67,7 @@ onMounted(() => {
       <v-card-text>
         <!-- 錢包地址輸入 -->
         <v-text-field
-          v-model="userStore.ton_wallet"
+          v-model="userStore.withdraw_ton_wallet"
           label="錢包地址"
           outlined
           disabled
@@ -83,12 +83,12 @@ onMounted(() => {
 
         <!-- 顯示 Ton 到 USD 匯率 -->
         <span class="caption"
-          >1 TON ≈ {{ tonToUsdRate.toFixed(2) }}</span
+          >1 TON ≈ {{ tonToUsdRate.toFixed(4) }} USD</span
         >
         <br />
-        <span class="caption"
-          >{{ transferAmount }} Ton ≈
-          {{ (transferAmount * tonToUsdRate).toFixed(2) }}
+        <span class="caption" v-show="transferAmount !== 0"
+          >{{ transferAmount }} TON ≈
+          {{ (transferAmount * tonToUsdRate).toFixed(4) }}
           USD</span
         >
       </v-card-text>
@@ -107,3 +107,9 @@ onMounted(() => {
     </v-card>
   </v-dialog>
 </template>
+
+<style lang="scss">
+.caption {
+  font-size: 12px;
+}
+</style>

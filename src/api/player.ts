@@ -3,8 +3,8 @@ import request from '@/utils/axios/request'
 enum Api {
   Register = '/api/v1/m/player/reg',
   Login = '/api/v1/m/player/login',
-  GetPlayerInfo = '/api/v1/m/player/m/player/info',
-  UpdatePlayerInfo = '/api/v1/m/player/m/player/update',
+  GetPlayerInfo = '/api/v1/m/player/info',
+  UpdatePlayerInfo = '/api/v1/m/player/update',
   TonWalletWithdraw = '/api/v1/m/trans/ton_withdraw'
 }
 
@@ -32,7 +32,9 @@ export interface PlayerLoginResponse {
     account: string
     balance: number
     balance_frozen: number
-    ton_wallet: string
+    withdraw_ton_wallet: string
+    deposit_ton_wallet: string
+    ton_wallet?: string
     vip_id: number
     status: string
   }
@@ -51,17 +53,35 @@ export interface TonWalletWithdrawResponse {
   trace?: string
 }
 
+export interface PlayerInfo {
+  account: string
+  balance: number
+  balance_frozen: number
+  withdraw_ton_wallet: string
+  deposit_ton_wallet: string
+  vip_id: number
+  status: string
+}
+export interface GetPlayerInfoParams extends PlayerRegisterData { }
+export interface GetPlayerInfoResponse {
+  code: string
+  message: string
+  result?: PlayerInfo
+  trace: string
+}
+
 export interface UpdatePlayerInfoParams {
   m_code: string
   account: string
   password: string
-  nickname: string
-  ton_wallet: string
-}
-export interface GetPlayerInfoParams extends PlayerRegisterData {
-
+  nickname?: string
+  withdraw_ton_wallet: string
+  deposit_ton_wallet?: string
 }
 
+export interface UpdatePlayerInfoResponse extends PlayerRegisterResponse {
+
+}
 /** 
  * @description: 註冊
  */
@@ -87,7 +107,7 @@ export function playerLoginAPI(data: PlayerRegisterData): Promise<PlayerLoginRes
 /** 
  * @description: 取得玩家資訊
  */
-export function getPlayerInfoAPI(data: GetPlayerInfoParams) {
+export function getPlayerInfoAPI(data: GetPlayerInfoParams): Promise<GetPlayerInfoResponse> {
   return request({
     url: Api.GetPlayerInfo,
     method: 'post',
@@ -98,7 +118,7 @@ export function getPlayerInfoAPI(data: GetPlayerInfoParams) {
 /** 
  * @description: 更新玩家資訊
  */
-export function updatePlayerInfoAPI(data: UpdatePlayerInfoParams) {
+export function updatePlayerInfoAPI(data: UpdatePlayerInfoParams): Promise<UpdatePlayerInfoResponse> {
   return request({
     url: Api.UpdatePlayerInfo,
     method: 'post',

@@ -1,5 +1,4 @@
 import request from '@/utils/axios/request'
-import type { AxiosResponse } from 'axios'
 /*
   玩家相關的 API
 

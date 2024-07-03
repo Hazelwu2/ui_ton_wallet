@@ -6,7 +6,7 @@ import GameList from '@/components/GameList/GameList.vue'
 import Alert from '@/components/Dialog/ShowAlert.vue'
 import DepositDialog from '@/components/Dialog/DepositDialog.vue'
 import WithdrawalDialog from '@/components/Dialog/WithdrawalDialog.vue'
-// import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
+import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useDialogStore } from '@/stores/dialog'
@@ -40,19 +40,12 @@ const { showDepositDialog, showWithdrawalDialog } =
       <WithdrawalDialog />
     </v-dialog>
 
-    <!-- <v-dialog
+    <v-dialog
       v-model="dialogStore.showProfileDialog"
       max-width="600"
     >
-      <template #activator="{ on }">
-        <v-btn
-          v-on="on"
-          @click="dialogStore.switchProfileDialog"
-          >個人資料
-        </v-btn>
-      </template>
       <ProfileDialog />
-    </v-dialog> -->
+    </v-dialog>
     <!-- 存款、取款、個人資料燈箱 End -->
   </main>
 </template>
