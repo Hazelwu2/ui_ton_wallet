@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { onMounted, nextTick } from 'vue'
+// Utils
+import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
+import { handleResponse } from '@/utils/axios/resUtils'
+// Pinia
 import { useUserStore } from '@/stores/user'
 import { useDialogStore } from '@/stores/dialog'
 import { storeToRefs } from 'pinia'
-import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
-import { handleResponse } from '@/utils/axios/resUtils'
+// Type
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 import type { PlayerRegisterResponse } from '@/api/player'
 
@@ -14,7 +17,8 @@ const dialogStore = useDialogStore()
 const { isLogin, account, balance, ton_wallet } =
   storeToRefs(userStore)
 // Action
-const { handleRegister } = userStore
+const { handleRegister, ifUserIsLogin } = userStore
+const { showAlert } = dialogStore
 
 // 全局定义 onTelegramAuth 函数，确保其能被 Telegram 脚本调用
 window.onTelegramAuth = (user: TelegramUserData) => {
@@ -54,34 +58,61 @@ const telegramLogin = async () => {
 }
 
 const loginSuccess = () => {
-  dialogStore.showAlert({
+  showAlert({
     icon: 'done',
     text: '登入成功'
   })
 }
 
 const loginFail = () => {
-  dialogStore.showAlert({
+  showAlert({
     icon: 'fail',
     text: '失敗'
   })
 }
 
 const handleDeposit = () => {
+  if (!ifUserIsLogin()) {
+    showAlert({
+      icon: 'fail',
+      text: '請先登入'
+    })
+    return
+  }
+
   dialogStore.switchDepositDialog()
 }
 
 const handleWithdrawal = () => {
+  if (!ifUserIsLogin()) {
+    showAlert({
+      icon: 'fail',
+      text: '請先登入'
+    })
+    return
+  }
+
   dialogStore.switchWithdrawalDialog()
 }
 
 const handleProfile = () => {
+  if (!ifUserIsLogin()) {
+    showAlert({
+      icon: 'fail',
+      text: '請先登入'
+    })
+    return
+  }
   dialogStore.switchProfileDialog()
 }
 
 // 點擊登出
-const handleLogout = () => {
-  userStore.handleLogout()
+const handleLogout = async () => {
+  await userStore.handleLogout()
+  showAlert({
+    icon: 'done',
+    text: '登出成功'
+  })
 }
 </script>
 

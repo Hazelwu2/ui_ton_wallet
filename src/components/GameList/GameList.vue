@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  onMounted,
-  onUnmounted,
-  ref,
-  nextTick,
-  computed
-} from 'vue'
+import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import { useGameStore } from '@/stores/game'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
@@ -20,6 +14,9 @@ import type {
 const gameStore = useGameStore()
 const dialogStore = useDialogStore()
 const userStore = useUserStore()
+
+const { ifUserIsLogin } = userStore
+const { showAlert } = dialogStore
 
 // Data
 const gameList = ref<GameList[]>([])
@@ -44,6 +41,14 @@ const getRandomArrayElement = () => {
 const launchGame = async (
   launchCode: string | undefined
 ) => {
+  if (!ifUserIsLogin()) {
+    showAlert({
+      icon: 'fail',
+      text: '請先登入'
+    })
+    return
+  }
+
   if (!launchCode)
     throw new Error('launchGame Fn 缺少參數 launchCode')
 
