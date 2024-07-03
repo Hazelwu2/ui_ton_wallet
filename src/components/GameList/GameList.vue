@@ -86,6 +86,7 @@ const getGameListFail = (res: GameListResponse) => {
 }
 
 const launchGameSuccess = (gameUrl: string) => {
+  console.log('gameUrl', gameUrl)
   const windowObj = window.open('', '_blank')
   if (!windowObj) throw new Error('windowObj 是 null')
 
