@@ -143,7 +143,7 @@ const getPlayerInfoSuccess = () => {
 
 <template>
   <v-container class="d-flex justify-space-between">
-    <v-row justify="space-around">
+    <v-row class="align-center" justify="space-around">
       <!-- 未登入 -->
 
       <!-- Telegram 按鈕 Start -->
@@ -204,7 +204,7 @@ const getPlayerInfoSuccess = () => {
       <v-row
         v-if="isLogin"
         justify="space-around"
-        align-items="center"
+        class="align-center"
       >
         <!-- 左邊 -->
         <v-col>
