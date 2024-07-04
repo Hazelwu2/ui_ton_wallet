@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import { useDisplay } from 'vuetify'
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  nextTick
+} from 'vue'
 import { useGameStore } from '@/stores/game'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
@@ -17,10 +24,13 @@ const userStore = useUserStore()
 
 const { ifUserIsLogin } = userStore
 const { showAlert } = dialogStore
+const { xs } = useDisplay()
 
 // Data
 const gameList = ref<GameList[]>([])
 const gameListContainer = ref<HTMLElement | null>(null)
+// Computed property to determine the image height based on the screen size
+const imageHeight = computed(() => (xs.value ? 120 : 200))
 
 // 預設遊戲封面
 const defaultImages = [
@@ -219,7 +229,7 @@ onUnmounted(() => {
         <div class="overflow-hidden shadow-round-container">
           <!-- 遊戲圖片 -->
           <v-img
-            height="150"
+            :height="imageHeight"
             :src="
               game?.pic
                 ? gameStore.path + game.pic
