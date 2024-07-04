@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 // Utils
 import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
 import { handleResponse } from '@/utils/axios/resUtils'
@@ -9,7 +9,10 @@ import { useDialogStore } from '@/stores/dialog'
 import { storeToRefs } from 'pinia'
 // Type
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
-import type { PlayerRegisterResponse } from '@/api/player'
+import type {
+  GetPlayerInfoResponse,
+  PlayerRegisterResponse
+} from '@/api/player'
 
 // Pinia Vuex
 const userStore = useUserStore()
@@ -23,6 +26,8 @@ const { showAlert } = dialogStore
 window.onTelegramAuth = (user: TelegramUserData) => {
   handleRegister(user) // 调用用户登录逻辑
 }
+
+const isRefreshing = ref(false)
 
 onMounted(() => {
   if (!isLogin.value) {
@@ -113,6 +118,26 @@ const handleLogout = async () => {
     text: '登出成功'
   })
 }
+
+const getPlayerInfo = async () => {
+  isRefreshing.value = true
+  try {
+    const res =
+      (await userStore.getPlayerInfo()) as GetPlayerInfoResponse
+    handleResponse(res, getPlayerInfoSuccess)
+  } finally {
+    setTimeout(() => {
+      isRefreshing.value = false
+    }, 500)
+  }
+}
+
+const getPlayerInfoSuccess = () => {
+  showAlert({
+    icon: 'done',
+    text: '更新余额成功'
+  })
+}
 </script>
 
 <template>
@@ -189,8 +214,12 @@ const handleLogout = async () => {
             {{ account }}
           </v-chip>
           <v-chip>
+            <v-icon class="mr-1">mdi-wallet-outline</v-icon>
+            TON: {{ balance }}
             <v-icon
-              >mdi-wallet-outline ${{ balance }}</v-icon
+              :class="{ 'mdi-spin': isRefreshing }"
+              @click="getPlayerInfo"
+              >mdi-refresh</v-icon
             >
           </v-chip>
         </v-col>

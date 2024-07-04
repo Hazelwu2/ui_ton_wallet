@@ -98,7 +98,10 @@ export const useUserStore = defineStore({
 
         // 更新 state 中的資料
         if (res?.result && res?.result?.withdraw_ton_wallet) {
+          // 更新提款帳號、餘額、凍結餘額
           this.withdraw_ton_wallet = res?.result?.withdraw_ton_wallet
+          this.balance = res?.result?.balance
+          this.balance_frozen = res?.result?.balance_frozen
         }
 
         return res
