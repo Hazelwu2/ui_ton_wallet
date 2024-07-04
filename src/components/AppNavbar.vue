@@ -3,6 +3,7 @@ import { ref, onMounted, nextTick } from 'vue'
 // Utils
 import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
 import { handleResponse } from '@/utils/axios/resUtils'
+import message from '@/utils/message'
 // Pinia
 import { useUserStore } from '@/stores/user'
 import { useDialogStore } from '@/stores/dialog'
@@ -64,7 +65,7 @@ const telegramLogin = async () => {
 const loginSuccess = () => {
   showAlert({
     icon: 'done',
-    text: '登入成功'
+    text: message.login.success
   })
 }
 
@@ -79,7 +80,7 @@ const handleDeposit = () => {
   if (!ifUserIsLogin()) {
     showAlert({
       icon: 'fail',
-      text: '請先登入'
+      text: message.auth
     })
     return
   }
@@ -91,7 +92,7 @@ const handleWithdrawal = () => {
   if (!ifUserIsLogin()) {
     showAlert({
       icon: 'fail',
-      text: '請先登入'
+      text: message.auth
     })
     return
   }
@@ -103,7 +104,7 @@ const handleProfile = () => {
   if (!ifUserIsLogin()) {
     showAlert({
       icon: 'fail',
-      text: '請先登入'
+      text: message.auth
     })
     return
   }
