@@ -208,64 +208,70 @@ const getPlayerInfoSuccess = () => {
       >
         <!-- 左邊 -->
         <v-col>
-          <v-chip>
-            <v-icon class="mr-2">
-              mdi-comment-account-outline
-            </v-icon>
-            {{ account }}
-          </v-chip>
-          <v-chip>
-            <v-icon class="mr-1">mdi-wallet-outline</v-icon>
-            TON: {{ balance }}
-            <v-icon
-              :class="{ 'mdi-spin': isRefreshing }"
-              @click="getPlayerInfo"
-              >mdi-refresh</v-icon
-            >
-          </v-chip>
+          <div class="nav-left">
+            <v-chip class="mr-2">
+              <v-icon class="mr-2">
+                mdi-comment-account-outline
+              </v-icon>
+              {{ account }}
+            </v-chip>
+            <v-chip>
+              <v-icon class="mr-1"
+                >mdi-wallet-outline</v-icon
+              >
+              TON: {{ balance }}
+              <v-icon
+                :class="{ 'mdi-spin': isRefreshing }"
+                @click="getPlayerInfo"
+                >mdi-refresh</v-icon
+              >
+            </v-chip>
+          </div>
         </v-col>
 
         <!-- 右邊 -->
         <v-col align-items="center">
-          <v-chip
-            prepend-icon="mdi-currency-usd"
-            variant="outlined"
-            size="small"
-            color="accent"
-            @click="handleDeposit"
-            class="mr-2"
-          >
-            存款
-          </v-chip>
-          <v-chip
-            prepend-icon="mdi-bank-transfer"
-            variant="outlined"
-            size="small"
-            color="accent"
-            @click="handleWithdrawal"
-            class="mr-2"
-          >
-            取款
-          </v-chip>
-          <v-chip
-            prepend-icon="mdi-account-circle-outline"
-            variant="outlined"
-            size="small"
-            color="accent"
-            @click="handleProfile"
-            class="mr-2"
-          >
-            個人資料
-          </v-chip>
-          <v-chip
-            prepend-icon="mdi-logout"
-            variant="outlined"
-            size="small"
-            color="accent"
-            @click="handleLogout"
-          >
-            登出
-          </v-chip>
+          <div class="nav-right">
+            <v-chip
+              prepend-icon="mdi-currency-usd"
+              variant="outlined"
+              size="small"
+              color="accent"
+              @click="handleDeposit"
+              class="mr-2"
+            >
+              存款
+            </v-chip>
+            <v-chip
+              prepend-icon="mdi-bank-transfer"
+              variant="outlined"
+              size="small"
+              color="accent"
+              @click="handleWithdrawal"
+              class="mr-2"
+            >
+              取款
+            </v-chip>
+            <v-chip
+              prepend-icon="mdi-account-circle-outline"
+              variant="outlined"
+              size="small"
+              color="accent"
+              @click="handleProfile"
+              class="mr-2"
+            >
+              個人資料
+            </v-chip>
+            <v-chip
+              prepend-icon="mdi-logout"
+              variant="outlined"
+              size="small"
+              color="accent"
+              @click="handleLogout"
+            >
+              登出
+            </v-chip>
+          </div>
         </v-col>
       </v-row>
     </v-row>
@@ -289,5 +295,14 @@ const getPlayerInfoSuccess = () => {
     /* border-right: 1px dashed #7a80a1; */
     border-right: 1px dashed #ffffff97;
   }
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 </style>
