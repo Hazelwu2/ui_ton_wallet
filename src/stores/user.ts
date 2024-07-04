@@ -29,6 +29,10 @@ interface UserState {
   deposit_ton_wallet: string
   balance_frozen?: number
   vip_id?: number
+  first_name?: string
+  username?: string
+  photo_url?: string
+  auth_date?: number
 }
 
 export const useUserStore = defineStore({
@@ -43,7 +47,12 @@ export const useUserStore = defineStore({
     deposit_ton_wallet: '',
     nickname: '',
     balance_frozen: 0,
-    vip_id: 0
+    vip_id: 0,
+    // Telegram
+    first_name: '',
+    username: '',
+    photo_url: '',
+    auth_date: 0
   }),
 
   actions: {
@@ -129,6 +138,13 @@ export const useUserStore = defineStore({
     async handleRegister(
       user: TelegramUserData
     ): Promise<PlayerRegisterResponse | undefined> {
+      // Telegram 回傳資料
+      console.log('user', user)
+      this.first_name = user.first_name
+      this.username = user.username
+      this.photo_url = user.photo_url
+      this.auth_date = user.auth_date
+
       const params = {
         m_code: import.meta.env.VITE_M_CODE,
         account: user?.id?.toString(),

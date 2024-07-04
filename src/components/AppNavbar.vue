@@ -18,10 +18,12 @@ import type {
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
-const { isLogin, account, balance } = storeToRefs(userStore)
+const { photo_url, isLogin, account, balance } =
+  storeToRefs(userStore)
 // Action
 const { handleRegister, ifUserIsLogin } = userStore
 const { showAlert } = dialogStore
+const menu = ref(false)
 
 // 全局定义 onTelegramAuth 函数，确保其能被 Telegram 脚本调用
 window.onTelegramAuth = (user: TelegramUserData) => {
@@ -60,6 +62,20 @@ const telegramLogin = async () => {
       handleResponse(res, loginSuccess, loginFail)
     }
   )
+}
+
+const copyAccount = () => {
+  if (!account.value)
+    throw new Error(
+      'copyAccount account.value is undeinfed'
+    )
+
+  navigator.clipboard.writeText(account.value).then(() => {
+    dialogStore.showAlert({
+      icon: 'done',
+      text: message.copy.success
+    })
+  })
 }
 
 const loginSuccess = () => {
@@ -120,6 +136,29 @@ const handleLogout = async () => {
   })
 }
 
+const menuItems = ref([
+  {
+    title: '個人資料',
+    icon: 'mdi-account-circle-outline',
+    handler: handleProfile
+  },
+  {
+    title: '存款',
+    icon: 'mdi-currency-usd',
+    handler: handleDeposit
+  },
+  {
+    title: '取款',
+    icon: 'mdi-bank-transfer',
+    handler: handleWithdrawal
+  },
+  {
+    title: '登出',
+    icon: 'mdi-logout',
+    handler: handleLogout
+  }
+])
+
 const getPlayerInfo = async () => {
   isRefreshing.value = true
   try {
@@ -143,10 +182,7 @@ const getPlayerInfoSuccess = () => {
 
 <template>
   <v-container class="d-flex justify-space-between">
-    <v-row class="align-center" justify="space-around">
-      <!-- 未登入 -->
-
-      <!-- Telegram 按鈕 Start -->
+    <nav>
       <!-- Telegram 按鈕會被動態載入並插入在這 -->
       <div
         v-if="!isLogin"
@@ -155,129 +191,98 @@ const getPlayerInfoSuccess = () => {
       />
       <!-- Telegram 按鈕 End -->
 
-      <div
-        v-if="!isLogin"
-        class="is-not-login d-flex align-center"
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        location="end"
       >
-        <div
-          @click="telegramLogin"
-          class="cursor-pointer user-area mb-1"
-        >
-          <div color="dark-text">您还未登录</div>
-          <div color="light-text">
-            <v-icon>mdi-login</v-icon>
-            登录
-            <span>/</span>
-            注册后查看
-          </div>
-        </div>
+        <template v-slot:activator="{ props }">
+          <!-- <v-avatar color="brown" size="large">
+          
+        </v-avatar> -->
+          <v-avatar v-bind="props">
+            <v-img
+              size="large"
+              alt="John"
+              src="https://cdn.vuetifyjs.com/images/john.jpg"
+            />
+            <!-- <span class="text-h5">Hazel</span> -->
+          </v-avatar>
+        </template>
 
-        <div class="tool">
-          <v-chip
-            prepend-icon="mdi-currency-usd"
-            variant="outlined"
-            size="small"
-            @click="handleDeposit"
-            class="mr-2"
-          >
-            存款
-          </v-chip>
-          <v-chip
-            prepend-icon="mdi-bank-transfer"
-            variant="outlined"
-            size="small"
-            @click="handleWithdrawal"
-            class="mr-2"
-          >
-            取款
-          </v-chip>
-          <v-chip
-            prepend-icon="mdi-account-circle-outline"
-            variant="outlined"
-            size="small"
-            @click="handleProfile"
-            class="mr-2"
-          >
-            個人資料
-          </v-chip>
-        </div>
-      </div>
-
-      <!-- 已登入 -->
-      <v-row
-        v-if="isLogin"
-        justify="space-around"
-        class="align-center"
-      >
-        <!-- 左邊 -->
-        <v-col>
-          <div class="nav-left">
-            <v-chip class="mr-2">
-              <v-icon class="mr-2">
-                mdi-comment-account-outline
-              </v-icon>
-              {{ account }}
-            </v-chip>
-            <v-chip>
-              <v-icon class="mr-1"
-                >mdi-wallet-outline</v-icon
+        <v-card min-width="500">
+          <v-list>
+            <v-list-item v-if="!isLogin">
+              <div
+                @click="telegramLogin"
+                class="cursor-pointer user-area mb-1"
               >
-              TON: {{ balance }}
-              <v-icon
-                :class="{ 'mdi-spin': isRefreshing }"
-                @click="getPlayerInfo"
-                >mdi-refresh</v-icon
-              >
-            </v-chip>
-          </div>
-        </v-col>
+                <div color="dark-text">您还未登录</div>
+                <div color="light-text">
+                  <v-icon>mdi-login</v-icon>
+                  登录
+                  <span>/</span>
+                  注册后查看
+                </div>
+              </div>
+            </v-list-item>
+          </v-list>
+          <v-list v-if="isLogin">
+            <v-list-item
+              prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
+            >
+              <template v-slot:title>
+                <div
+                  class="cursor-pointer d-flex align-center"
+                >
+                  {{ account }}
+                  <v-icon
+                    size="x-small"
+                    @click="copyAccount"
+                    color="info"
+                    class="ml-2"
+                    >mdi-content-copy</v-icon
+                  >
+                </div>
+              </template>
+              <template v-slot:subtitle>
+                <div class="d-flex align-center">
+                  <v-icon
+                    class="mr-2"
+                    icon="mdi-wallet-outline"
+                  />
+                  TON 钱包余额 $ {{ balance }}
+                </div>
+              </template>
+              <template v-slot:append>
+                <v-btn
+                  icon="mdi-refresh"
+                  variant="text"
+                  @click="getPlayerInfo"
+                ></v-btn>
+              </template>
+            </v-list-item>
+          </v-list>
 
-        <!-- 右邊 -->
-        <v-col align-items="center">
-          <div class="nav-right">
-            <v-chip
-              prepend-icon="mdi-currency-usd"
-              variant="outlined"
-              size="small"
-              color="accent"
-              @click="handleDeposit"
-              class="mr-2"
+          <v-divider></v-divider>
+
+          <v-list v-if="isLogin">
+            <v-list-item
+              v-for="(item, index) in menuItems"
+              :key="index"
+              @click="item.handler"
             >
-              存款
-            </v-chip>
-            <v-chip
-              prepend-icon="mdi-bank-transfer"
-              variant="outlined"
-              size="small"
-              color="accent"
-              @click="handleWithdrawal"
-              class="mr-2"
-            >
-              取款
-            </v-chip>
-            <v-chip
-              prepend-icon="mdi-account-circle-outline"
-              variant="outlined"
-              size="small"
-              color="accent"
-              @click="handleProfile"
-              class="mr-2"
-            >
-              個人資料
-            </v-chip>
-            <v-chip
-              prepend-icon="mdi-logout"
-              variant="outlined"
-              size="small"
-              color="accent"
-              @click="handleLogout"
-            >
-              登出
-            </v-chip>
-          </div>
-        </v-col>
-      </v-row>
-    </v-row>
+              <template v-slot:prepend>
+                <v-icon :icon="item.icon"></v-icon>
+              </template>
+              <v-list-item-title>
+                {{ item.title }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
+    </nav>
   </v-container>
 </template>
 
@@ -302,25 +307,12 @@ const getPlayerInfoSuccess = () => {
   }
 }
 
-.is-not-login {
-  flex-direction: column;
-  @media screen and (min-width: 600px) {
-    flex-direction: row;
-  }
-
-  .tool {
-    @media screen and (min-width: 600px) {
-      margin-left: 12px;
-    }
-  }
-}
-
-.nav-left,
-.nav-right {
-  display: flex;
-  flex-direction: row;
+nav {
   width: 100%;
-  justify-content: center;
-  align-items: center;
+  font-size: 12px;
+  margin-top: 0.5rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  text-align: right;
 }
 </style>
