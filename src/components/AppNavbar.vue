@@ -195,6 +195,7 @@ const getPlayerInfoSuccess = () => {
         v-model="menu"
         :close-on-content-click="false"
         location="end"
+        height="80vh"
       >
         <template v-slot:activator="{ props }">
           <!-- <v-avatar color="brown" size="large">
@@ -217,8 +218,8 @@ const getPlayerInfoSuccess = () => {
                 @click="telegramLogin"
                 class="cursor-pointer user-area mb-1"
               >
-                <div color="dark-text">您还未登录</div>
-                <div color="light-text">
+                <div class="text-caption">您还未登录</div>
+                <div color="info">
                   <v-icon>mdi-login</v-icon>
                   登录
                   <span>/</span>
@@ -280,6 +281,18 @@ const getPlayerInfoSuccess = () => {
               </v-list-item-title>
             </v-list-item>
           </v-list>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-btn
+              variant="text"
+              color="orange-lighten-2"
+              @click="menu = false"
+            >
+              關閉
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-menu>
     </nav>
@@ -301,7 +314,6 @@ const getPlayerInfoSuccess = () => {
       height: 75%;
       top: 50%;
       transform: translateY(-50%);
-      /* border-right: 1px dashed #7a80a1; */
       border-right: 1px dashed #ffffff97;
     }
   }
