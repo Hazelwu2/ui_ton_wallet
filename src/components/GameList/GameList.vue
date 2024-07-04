@@ -219,6 +219,7 @@ onUnmounted(() => {
         <div class="overflow-hidden shadow-round-container">
           <!-- 遊戲圖片 -->
           <v-img
+            height="150"
             :src="
               game?.pic
                 ? gameStore.path + game.pic
