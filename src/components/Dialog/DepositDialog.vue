@@ -15,8 +15,7 @@ const { showDepositDialog } = storeToRefs(dialogStore)
 const PRE_FIX = 'ton://transfer/'
 const qrCodeValue = `${PRE_FIX}${deposit_ton_wallet}`
 // 生成 Ton Wallet 的 URI 链接
-// const tonWalletUri = `ton://transfer?address=${deposit_ton_wallet}`
-const tonWalletUri = `ton://${deposit_ton_wallet}`
+const tonWalletUri = `${PRE_FIX}${deposit_ton_wallet}`
 
 // 打开 Ton Wallet 或 Ton Keeper
 const openTonWallet = () => {
