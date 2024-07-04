@@ -155,10 +155,13 @@ const getPlayerInfoSuccess = () => {
       />
       <!-- Telegram 按鈕 End -->
 
-      <div v-if="!isLogin" class="d-flex align-center">
+      <div
+        v-if="!isLogin"
+        class="is-not-login d-flex align-center"
+      >
         <div
           @click="telegramLogin"
-          class="cursor-pointer user-area"
+          class="cursor-pointer user-area mb-1"
         >
           <div color="dark-text">您还未登录</div>
           <div color="light-text">
@@ -283,17 +286,26 @@ const getPlayerInfoSuccess = () => {
   position: relative;
   padding-right: 1rem;
 
-  &:before {
-    content: '';
-    position: absolute;
-    right: 0;
-    display: block;
-    width: 1px;
-    height: 75%;
-    top: 50%;
-    transform: translateY(-50%);
-    /* border-right: 1px dashed #7a80a1; */
-    border-right: 1px dashed #ffffff97;
+  @media screen and (min-width: 600px) {
+    &:before {
+      content: '';
+      position: absolute;
+      right: 0;
+      display: block;
+      width: 1px;
+      height: 75%;
+      top: 50%;
+      transform: translateY(-50%);
+      /* border-right: 1px dashed #7a80a1; */
+      border-right: 1px dashed #ffffff97;
+    }
+  }
+}
+
+.is-not-login {
+  flex-direction: column;
+  @media screen and (min-width: 600px) {
+    flex-direction: row;
   }
 }
 
