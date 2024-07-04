@@ -190,91 +190,101 @@ onUnmounted(() => {
 
 <template>
   <div class="game-list-container" ref="gameListContainer">
-    <v-row class="py-2 mt-4">
-      <v-col cols="12" class="px-1 py-1">
-        <div
-          class="banner overflow-hidden shadow-round-container"
-          :style="{
-            backgroundImage: `url('/images/xgd-banner.png')`
-          }"
+    <v-container>
+      <v-row class="mb-4 px-2">
+        <v-col cols="12" class="px-1 py-1">
+          <div
+            class="banner overflow-hidden shadow-round-container"
+            :style="{
+              backgroundImage: `url('/images/xgd-banner.png')`
+            }"
+          >
+            <div
+              class="position-relative rounded"
+              :style="{
+                width: '100%',
+                height: '100%'
+              }"
+            >
+              <!-- 遊戲圖片 -->
+              <v-img
+                class="banner__img position-absolute rounded"
+                :src="`/images/xgd-logo.png`"
+              />
+              <strong
+                class="banner__text position-absolute"
+              >
+                新高登棋牌
+              </strong>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+
+      <v-row class="px-2">
+        <v-col
+          cols="6"
+          sm="4"
+          v-for="game in gameList"
+          :key="game?.launch_code"
+          class="px-1 py-1"
         >
           <div
-            class="position-relative rounded"
-            :style="{
-              width: '100%',
-              height: '100%'
-            }"
+            class="overflow-hidden shadow-round-container"
           >
             <!-- 遊戲圖片 -->
             <v-img
-              class="banner__img position-absolute rounded"
-              :src="`/images/xgd-logo.png`"
-            />
-            <strong class="banner__text position-absolute">
-              新高登棋牌
-            </strong>
-          </div>
-        </div>
-      </v-col>
-    </v-row>
+              :height="imageHeight"
+              :src="
+                game?.pic
+                  ? gameStore.path + game.pic
+                  : defaultImages[getRandomArrayElement()]
+              "
+              cover
+              class="rounded"
+              @click="launchGame(game?.launch_code)"
+            >
+            </v-img>
 
-    <v-row class="py-2 mt-4">
-      <v-col
-        cols="6"
-        sm="4"
-        v-for="game in gameList"
-        :key="game?.launch_code"
-        class="px-1 py-1"
-      >
-        <div class="overflow-hidden shadow-round-container">
-          <!-- 遊戲圖片 -->
-          <v-img
-            :height="imageHeight"
-            :src="
-              game?.pic
-                ? gameStore.path + game.pic
-                : defaultImages[getRandomArrayElement()]
-            "
-            cover
-            class="rounded"
-            @click="launchGame(game?.launch_code)"
+            <!-- 遊戲敘述 -->
+            <div
+              class="description d-flex align-center py-2"
+            >
+              <span class="description__name subtitle-2">
+                {{ game?.name }}
+              </span>
+              <v-spacer />
+            </div>
+          </div>
+        </v-col>
+
+        <v-col
+          v-if="gameStore.scrollToBottom"
+          cols="12"
+          class="text-center"
+        >
+          <v-chip>已經滑到最底囉</v-chip>
+        </v-col>
+        <v-col
+          v-else
+          cols="6"
+          sm="4"
+          class="px-1 py-1 justify-center"
+          v-for="i in 7"
+          :key="i"
+        >
+          <div
+            class="overflow-hidden shadow-round-container"
           >
-          </v-img>
-
-          <!-- 遊戲敘述 -->
-          <div class="description d-flex align-center py-2">
-            <span class="description__name subtitle-2">
-              {{ game?.name }}
-            </span>
-            <v-spacer />
+            <v-skeleton-loader
+              max-width="270"
+              :elevation="5"
+              type="card"
+            />
           </div>
-        </div>
-      </v-col>
-
-      <v-col
-        v-if="gameStore.scrollToBottom"
-        cols="12"
-        class="text-center"
-      >
-        <v-chip>已經滑到最底囉</v-chip>
-      </v-col>
-      <v-col
-        v-else
-        cols="6"
-        sm="4"
-        class="px-1 py-1 justify-center"
-        v-for="i in 7"
-        :key="i"
-      >
-        <div class="overflow-hidden shadow-round-container">
-          <v-skeleton-loader
-            max-width="270"
-            :elevation="5"
-            type="card"
-          />
-        </div>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -287,8 +297,7 @@ onUnmounted(() => {
 }
 
 .game-list-container {
-  height: 80vh;
-  overflow-y: auto;
+  height: 90vh;
 }
 
 .banner {
