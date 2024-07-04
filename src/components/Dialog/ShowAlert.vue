@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
 import { useDialogStore } from '@/stores/dialog'
 import { storeToRefs } from 'pinia'
 
+const { xs } = useDisplay()
 const props = defineProps({
   dialog: {
     type: Boolean,
@@ -21,6 +23,8 @@ const props = defineProps({
 // Pinia Vuex
 const dialogStore = useDialogStore()
 const { alertStatus } = storeToRefs(dialogStore)
+const alertHeight = computed(() => (xs.value ? 100 : 140))
+const alertWidth = computed(() => (xs.value ? 250 : 300))
 
 // 根据 icon 属性获取相应的颜色类名
 const color = computed(() => {
@@ -71,14 +75,14 @@ const closeDialog = () => {
   <v-dialog
     v-model="alertStatus"
     persistent
-    max-width="300"
+    :max-width="alertWidth"
     @click:outside="closeDialog"
     :style="{
       zIndex: 3000
     }"
   >
     <v-card
-      height="150px"
+      :height="alertHeight"
       class="d-flex align-center justify-center flex-column"
     >
       <v-icon :color="color" size="small">{{

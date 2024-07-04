@@ -172,7 +172,7 @@ const getPlayerInfoSuccess = () => {
           </div>
         </div>
 
-        <div class="ml-4">
+        <div class="tool">
           <v-chip
             prepend-icon="mdi-currency-usd"
             variant="outlined"
@@ -306,6 +306,12 @@ const getPlayerInfoSuccess = () => {
   flex-direction: column;
   @media screen and (min-width: 600px) {
     flex-direction: row;
+  }
+
+  .tool {
+    @media screen and (min-width: 600px) {
+      margin-left: 12px;
+    }
   }
 }
 
