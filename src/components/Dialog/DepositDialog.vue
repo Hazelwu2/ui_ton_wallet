@@ -22,17 +22,17 @@ const openTonWallet = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(
     navigator.userAgent
   )
-  let windowObj = window.open('', '_blank')
-  if (!windowObj) throw new Error('windowObj 是 null')
 
   if (isMobile) {
+    let windowObj = window.open('', '_blank')
+    if (!windowObj) throw new Error('windowObj 是 null')
     // 手机端
     windowObj.location.href = tonWalletUri
   } else {
-    windowObj.location.href = tonWalletUri
+    // windowObj.location.href = tonWalletUri
     // 电脑端，提示用户手动打开
     dialogStore.showAlert({
-      icon: 'fail',
+      icon: 'done',
       text: '请手动打开 Ton Wallet 或 Ton Keeper 并粘贴帐号地址'
     })
   }
@@ -79,12 +79,14 @@ const warningTextList = [
         >
           {{ deposit_ton_wallet }}
         </a>
-        <div
+        <span
           @click="copyWalletAddress"
           class="cursor-pointer"
         >
-          <v-icon class="ml-2">mdi-content-copy</v-icon>
-        </div>
+          <v-icon size="x-small" class="ml-2"
+            >mdi-content-copy
+          </v-icon>
+        </span>
 
         <v-alert type="warning" class="mt-4">
           <ul class="text-left">
