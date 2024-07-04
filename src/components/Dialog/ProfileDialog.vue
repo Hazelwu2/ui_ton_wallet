@@ -60,6 +60,7 @@ const updatePlayerInfoSuccess = () => {
   })
   getPlayerInfo()
 }
+
 const updatePlayerInfoFail = (
   res: UpdatePlayerInfoResponse
 ) => {

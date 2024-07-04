@@ -3,6 +3,7 @@ import QrcodeVue from 'qrcode.vue'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
+import message from '@/utils/message'
 
 // Pinia Vuex
 const dialogStore = useDialogStore()
@@ -45,7 +46,7 @@ const copyWalletAddress = () => {
     .then(() => {
       dialogStore.showAlert({
         icon: 'done',
-        text: '钱包地址已复制到剪贴板'
+        text: message.copy.success
       })
     })
 }
