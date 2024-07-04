@@ -14,19 +14,22 @@ const { showDepositDialog } = storeToRefs(dialogStore)
 const PRE_FIX = 'ton://transfer/'
 const qrCodeValue = `${PRE_FIX}${deposit_ton_wallet}`
 // 生成 Ton Wallet 的 URI 链接
-const tonWalletUri = `ton://transfer?address=${deposit_ton_wallet}`
+// const tonWalletUri = `ton://transfer?address=${deposit_ton_wallet}`
+const tonWalletUri = `ton://${deposit_ton_wallet}`
 
 // 打开 Ton Wallet 或 Ton Keeper
 const openTonWallet = () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(
     navigator.userAgent
   )
+  let windowObj = window.open('', '_blank')
+  if (!windowObj) throw new Error('windowObj 是 null')
 
   if (isMobile) {
     // 手机端
-    window.location.href = tonWalletUri
+    windowObj.location.href = tonWalletUri
   } else {
-    window.location.href = tonWalletUri
+    windowObj.location.href = tonWalletUri
     // 电脑端，提示用户手动打开
     dialogStore.showAlert({
       icon: 'fail',
