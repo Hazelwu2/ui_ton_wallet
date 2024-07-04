@@ -18,7 +18,7 @@ import type {
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
-const { photo_url, isLogin, account, balance } =
+const { first_name, isLogin, account, balance } =
   storeToRefs(userStore)
 // Action
 const { handleRegister, ifUserIsLogin } = userStore
@@ -73,7 +73,7 @@ const copyAccount = () => {
   navigator.clipboard.writeText(account.value).then(() => {
     dialogStore.showAlert({
       icon: 'done',
-      text: message.copy.success
+      text: message.copy.account
     })
   })
 }
@@ -236,23 +236,22 @@ const getPlayerInfoSuccess = () => {
                 <div
                   class="cursor-pointer d-flex align-center"
                 >
-                  {{ account }}
-                  <v-icon
-                    size="x-small"
-                    @click="copyAccount"
-                    color="info"
-                    class="ml-2"
-                    >mdi-content-copy</v-icon
-                  >
+                  {{ first_name }}
                 </div>
               </template>
               <template v-slot:subtitle>
-                <div class="d-flex align-center">
-                  <v-icon
-                    class="mr-2"
-                    icon="mdi-wallet-outline"
-                  />
-                  TON 钱包余额 $ {{ balance }}
+                <div class="d-flex align-start flex-column">
+                  <div>
+                    帐号 {{ account }}
+                    <v-icon
+                      size="x-small"
+                      @click="copyAccount"
+                      color="info"
+                      class="ml-2"
+                      >mdi-content-copy</v-icon
+                    >
+                  </div>
+                  <div>钱包余额 $ {{ balance }}</div>
                 </div>
               </template>
               <template v-slot:append>

@@ -17,7 +17,8 @@ const message = {
   auth: '请先登入',
 
   copy: {
-    success: '钱包地址已复制到剪贴板'
+    success: '钱包地址已复制到剪贴板',
+    account: '帐号已复制到剪贴板'
   }
 }
 export default message
