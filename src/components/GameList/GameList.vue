@@ -38,28 +38,6 @@ const getRandomArrayElement = () => {
   return array[randomIndex]
 }
 
-const launchGame = async (
-  launchCode: string | undefined
-) => {
-  if (!ifUserIsLogin()) {
-    showAlert({
-      icon: 'fail',
-      text: '請先登入'
-    })
-    return
-  }
-
-  if (!launchCode)
-    throw new Error('launchGame Fn 缺少參數 launchCode')
-
-  const res = await gameStore.launchGame(launchCode)
-  handleResponse(
-    res as LaunchGameResponse,
-    launchGameSuccess,
-    launchGameFail
-  )
-}
-
 const getGameList = async () => {
   const res = await gameStore.getGameList()
   handleResponse(
@@ -90,12 +68,36 @@ const getGameListFail = (res: GameListResponse) => {
   })
 }
 
-const launchGameSuccess = (gameUrl: string) => {
-  console.log('gameUrl', gameUrl)
+const launchGame = async (
+  launchCode: string | undefined
+) => {
+  if (!ifUserIsLogin()) {
+    showAlert({
+      icon: 'fail',
+      text: '請先登入'
+    })
+    return
+  }
+
+  if (!launchCode)
+    throw new Error('launchGame Fn 缺少參數 launchCode')
+
+  const res = await gameStore.launchGame(launchCode)
+  handleResponse(
+    res as LaunchGameResponse,
+    launchGameSuccess,
+    launchGameFail
+  )
+}
+
+const launchGameSuccess = (res: LaunchGameResponse) => {
+  if (!res?.result || !res?.result.url) {
+    throw new Error('launchGameSuccess res 沒有 result')
+  }
   const windowObj = window.open('', '_blank')
   if (!windowObj) throw new Error('windowObj 是 null')
 
-  windowObj.location.href = gameUrl
+  windowObj.location.href = res.result.url
 }
 
 const launchGameFail = (res: LaunchGameResponse) => {

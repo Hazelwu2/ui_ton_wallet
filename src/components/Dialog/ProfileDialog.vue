@@ -37,7 +37,6 @@ withdrawTonWalletFieldValue.value =
 
 // 提交表單
 const submit = handleSubmit(async (values) => {
-  console.log('values', values)
   const params = {
     m_code: import.meta.env.VITE_M_CODE,
     account: account.value,
@@ -78,11 +77,7 @@ const getPlayerInfo = async () => {
   const res =
     (await userStore.getPlayerInfo()) as GetPlayerInfoResponse
 
-  handleResponse(
-    res
-    // updatePlayerInfoSuccess,
-    // updatePlayerInfoFail
-  )
+  handleResponse(res)
 }
 </script>
 
