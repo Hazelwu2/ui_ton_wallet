@@ -251,16 +251,24 @@ const getPlayerInfoSuccess = () => {
                       >mdi-content-copy</v-icon
                     >
                   </div>
-                  <div>钱包余额 $ {{ balance }}</div>
+                  <div>
+                    钱包余额 $ {{ balance }}
+                    <v-btn
+                      icon="mdi-refresh"
+                      variant="text"
+                      size="xs"
+                      @click="getPlayerInfo"
+                    ></v-btn>
+                  </div>
                 </div>
               </template>
-              <template v-slot:append>
+              <!-- <template v-slot:append>
                 <v-btn
                   icon="mdi-refresh"
                   variant="text"
                   @click="getPlayerInfo"
                 ></v-btn>
-              </template>
+              </template> -->
             </v-list-item>
           </v-list>
 
