@@ -112,7 +112,6 @@ const launchGame = async (
       launchGameSuccess,
       launchGameFail
     )
-    alert(`你在line裡！`)
   } else {
     const windowObj = window.open('', '_blank')
     const res = await gameStore.launchGame(launchCode)
@@ -135,13 +134,9 @@ const launchGameSuccess = (
 
   const userAgent = navigator.userAgent.toLowerCase()
   const isLineBrowser = userAgent.includes('line')
-  // isLineBrowser = u.indexOf("Line") > -1, // Line 內建瀏覽器
-  console.log(userAgent)
-  console.log(isLineBrowser)
 
   if (isLineBrowser) {
-    //   // 如果在 LINE 內開啟，導航到指定的 URL
-    // window.location.href = res.result.url // 注意確保 res.result.url 已經定義好
+    // 如果在 LINE 內開啟，導航到指定的 URL
     window.location.href = res.result.url
   } else {
     if (!windowObj) throw new Error('windowObj 是 null')
