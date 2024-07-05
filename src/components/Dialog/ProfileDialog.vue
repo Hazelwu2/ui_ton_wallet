@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
@@ -81,6 +82,12 @@ const getPlayerInfo = async () => {
 
   handleResponse(res)
 }
+
+watch(showProfileDialog, (newValue) => {
+  if (newValue) {
+    getPlayerInfo()
+  }
+})
 </script>
 
 <template>
