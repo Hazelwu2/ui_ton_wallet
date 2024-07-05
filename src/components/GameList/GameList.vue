@@ -101,17 +101,6 @@ const launchGame = async (
   if (!launchCode)
     throw new Error('launchGame Fn 缺少參數 launchCode')
 
-  const userAgent = navigator.userAgent.toLowerCase()
-  const isLineBrowser = userAgent.includes('line')
-  // isLineBrowser = u.indexOf("Line") > -1, // Line 內建瀏覽器
-  console.log(userAgent)
-  console.log(isLineBrowser)
-
-  // if (isLineBrowser) {
-  //   // 如果在 LINE 內開啟，導航到指定的 URL
-  //   location.href = res.result.url;  // 注意確保 res.result.url 已經定義好
-  // }
-
   const windowObj = window.open('', '_blank')
   const res = await gameStore.launchGame(launchCode)
   handleResponse(
@@ -128,6 +117,18 @@ const launchGameSuccess = (
 ) => {
   if (!res?.result || !res?.result.url) {
     throw new Error('launchGameSuccess res 沒有 result')
+  }
+
+  const userAgent = navigator.userAgent.toLowerCase()
+  const isLineBrowser = userAgent.includes('line')
+  // isLineBrowser = u.indexOf("Line") > -1, // Line 內建瀏覽器
+  console.log(userAgent)
+  console.log(isLineBrowser)
+
+  if (isLineBrowser) {
+    //   // 如果在 LINE 內開啟，導航到指定的 URL
+    window.location.href = res.result.url // 注意確保 res.result.url 已經定義好
+    return
   }
 
   if (!windowObj) throw new Error('windowObj 是 null')
