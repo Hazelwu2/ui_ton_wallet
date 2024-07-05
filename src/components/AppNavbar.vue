@@ -18,8 +18,13 @@ import type {
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
-const { first_name, isLogin, account, balance } =
-  storeToRefs(userStore)
+const {
+  balance_frozen,
+  first_name,
+  isLogin,
+  account,
+  balance
+} = storeToRefs(userStore)
 // Action
 const { handleRegister, ifUserIsLogin } = userStore
 const { showAlert } = dialogStore
@@ -164,7 +169,11 @@ const getPlayerInfo = async () => {
   try {
     const res =
       (await userStore.getPlayerInfo()) as GetPlayerInfoResponse
-    handleResponse(res, getPlayerInfoSuccess)
+    handleResponse(
+      res,
+      getPlayerInfoSuccess,
+      getPlayerInfoFail
+    )
   } finally {
     setTimeout(() => {
       isRefreshing.value = false
@@ -176,6 +185,12 @@ const getPlayerInfoSuccess = () => {
   showAlert({
     icon: 'done',
     text: '更新余额成功'
+  })
+}
+const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
+  showAlert({
+    icon: 'fail',
+    text: message.common.fail(res)
   })
 }
 </script>
@@ -190,6 +205,22 @@ const getPlayerInfoSuccess = () => {
         class="align-center d-none"
       />
       <!-- Telegram 按鈕 End -->
+      <div clsas="d-flex flex-column">
+        <span class="d-flex">
+          <v-icon>mdi-wallet-outline</v-icon>
+          目前余额 TON {{ balance }}
+          <v-btn
+            icon="mdi-refresh"
+            variant="text"
+            size="xs"
+            @click="getPlayerInfo"
+          ></v-btn>
+        </span>
+        <span class="d-flex">
+          <v-icon>mdi-wallet-outline</v-icon>
+          冻结余额 TON {{ balance_frozen }}
+        </span>
+      </div>
 
       <v-menu
         v-model="menu"
@@ -333,5 +364,9 @@ nav {
   padding-right: 0.5rem;
   padding-left: 0.5rem;
   text-align: right;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
