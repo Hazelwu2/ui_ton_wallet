@@ -127,7 +127,8 @@ const launchGameSuccess = (
 
   if (isLineBrowser) {
     //   // 如果在 LINE 內開啟，導航到指定的 URL
-    window.location.href = res.result.url // 注意確保 res.result.url 已經定義好
+    // window.location.href = res.result.url // 注意確保 res.result.url 已經定義好
+    alert(`你在line裡！ ${res.result.url}`)
     return
   }
 
