@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { updatePlayerInfoAPI } from '@/api/player'
 import { handleResponse } from '@/utils/axios/resUtils'
+
 import type {
   UpdatePlayerInfoResponse,
   GetPlayerInfoResponse
@@ -99,6 +100,7 @@ const getPlayerInfo = async () => {
             label="帳號"
             required
           />
+
           <v-text-field
             v-model="withdrawTonWalletFieldValue"
             :counter="48"
