@@ -92,19 +92,24 @@ const launchGame = async (
   if (!launchCode)
     throw new Error('launchGame Fn 缺少參數 launchCode')
 
+  const windowObj = window.open('', '_blank')
   const res = await gameStore.launchGame(launchCode)
   handleResponse(
     res as LaunchGameResponse,
     launchGameSuccess,
-    launchGameFail
+    launchGameFail,
+    windowObj
   )
 }
 
-const launchGameSuccess = (res: LaunchGameResponse) => {
+const launchGameSuccess = (
+  res: LaunchGameResponse,
+  windowObj: any
+) => {
   if (!res?.result || !res?.result.url) {
     throw new Error('launchGameSuccess res 沒有 result')
   }
-  const windowObj = window.open('', '_blank')
+
   if (!windowObj) throw new Error('windowObj 是 null')
 
   windowObj.location.href = res.result.url

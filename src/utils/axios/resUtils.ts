@@ -10,10 +10,11 @@ const noFunction = (data: any) => data
 export const handleResponse = (
   res: CustomAxiosResponse,
   successFn: any = noFunction,
-  errorFn: any = noFunction
+  errorFn: any = noFunction,
+  windowObj: Window | null = null
 ) => {
   if (res.code === '0') {
-    successFn(res)
+    successFn(res, windowObj)
   } else {
     errorFn(res)
   }
