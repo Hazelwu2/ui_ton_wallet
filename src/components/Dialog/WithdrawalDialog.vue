@@ -122,7 +122,7 @@ const submit = handleSubmit(async (values) => {
 
           <div class="ml-4 mt-1">
             <span style="color: red" class="caption">
-              目前餘額 TON {{ balance }}
+              目前余额 TON {{ balance }}
             </span>
             <br />
             <!-- 顯示 Ton 到 USD 匯率 -->
