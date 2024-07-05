@@ -101,14 +101,28 @@ const launchGame = async (
   if (!launchCode)
     throw new Error('launchGame Fn 缺少參數 launchCode')
 
-  const windowObj = window.open('', '_blank')
-  const res = await gameStore.launchGame(launchCode)
-  handleResponse(
-    res as LaunchGameResponse,
-    launchGameSuccess,
-    launchGameFail,
-    windowObj
-  )
+  const userAgent = navigator.userAgent.toLowerCase()
+  const isLineBrowser = userAgent.includes('line')
+  if (isLineBrowser) {
+    //   // 如果在 LINE 內開啟，導航到指定的 URL
+    // window.location.href = res.result.url // 注意確保 res.result.url 已經定義好
+    const res = await gameStore.launchGame(launchCode)
+    handleResponse(
+      res as LaunchGameResponse,
+      launchGameSuccess,
+      launchGameFail
+    )
+    alert(`你在line裡！`)
+  } else {
+    const windowObj = window.open('', '_blank')
+    const res = await gameStore.launchGame(launchCode)
+    handleResponse(
+      res as LaunchGameResponse,
+      launchGameSuccess,
+      launchGameFail,
+      windowObj
+    )
+  }
 }
 
 const launchGameSuccess = (
@@ -130,11 +144,11 @@ const launchGameSuccess = (
     // window.location.href = res.result.url // 注意確保 res.result.url 已經定義好
     alert(`你在line裡！ ${res.result.url}`)
     return
+  } else {
+    if (!windowObj) throw new Error('windowObj 是 null')
+
+    windowObj.location.href = res.result.url
   }
-
-  if (!windowObj) throw new Error('windowObj 是 null')
-
-  windowObj.location.href = res.result.url
 }
 
 const launchGameFail = (res: LaunchGameResponse) => {

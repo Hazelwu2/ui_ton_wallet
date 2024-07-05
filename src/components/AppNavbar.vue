@@ -207,7 +207,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
       <!-- Telegram 按鈕 End -->
       <div clsas="d-flex flex-column">
         <span class="d-flex">
-          v3
+          v4
           <v-icon>mdi-wallet-outline</v-icon>
           目前余额 TON {{ balance }}
           <v-btn
