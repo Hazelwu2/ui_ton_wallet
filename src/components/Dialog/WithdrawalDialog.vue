@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { watch, onMounted, ref, computed } from 'vue'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { handleResponse } from '@/utils/axios/resUtils'
-import type { TonWalletWithdrawResponse } from '@/api/player'
+import type {
+  GetPlayerInfoResponse,
+  TonWalletWithdrawResponse
+} from '@/api/player'
 // Form Validate
 import { useField, useForm } from 'vee-validate'
 import { WithdrawalSchema } from '@/utils/form/withdrawalSchema'
@@ -89,6 +92,19 @@ const submit = handleSubmit(async (values) => {
     withdrawalSuccess,
     withdrawalFail
   )
+})
+
+const getPlayerInfo = async () => {
+  const res =
+    (await userStore.getPlayerInfo()) as GetPlayerInfoResponse
+
+  handleResponse(res)
+}
+
+watch(showWithdrawalDialog, (newValue) => {
+  if (newValue) {
+    getPlayerInfo()
+  }
 })
 </script>
 
