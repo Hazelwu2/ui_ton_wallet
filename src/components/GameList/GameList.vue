@@ -11,6 +11,7 @@ import { useGameStore } from '@/stores/game'
 import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 import { handleResponse } from '@/utils/axios/resUtils'
+import message from '@/utils/message'
 import type {
   GameList,
   GameListResponse,
@@ -85,6 +86,14 @@ const launchGame = async (
     showAlert({
       icon: 'fail',
       text: '請先登入'
+    })
+    return
+  }
+
+  if (!userStore?.withdraw_ton_wallet) {
+    showAlert({
+      icon: 'fail',
+      text: message.noHaveWallet
     })
     return
   }
