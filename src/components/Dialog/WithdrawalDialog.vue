@@ -79,6 +79,7 @@ const withdrawalFail = (res: TonWalletWithdrawResponse) => {
 
 onMounted(() => {
   fetchTonToUsdRate()
+  getPlayerInfo()
 })
 
 // 提交表單
@@ -102,6 +103,7 @@ const getPlayerInfo = async () => {
 }
 
 watch(showWithdrawalDialog, (newValue) => {
+  console.log('newValue', newValue)
   if (newValue) {
     getPlayerInfo()
   }
