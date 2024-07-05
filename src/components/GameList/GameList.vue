@@ -101,6 +101,15 @@ const launchGame = async (
   if (!launchCode)
     throw new Error('launchGame Fn 缺少參數 launchCode')
 
+  const userAgent = navigator.userAgent.toLowerCase()
+  // const isLineBrowser = userAgent.includes('line')
+  alert(userAgent)
+
+  // if (isLineBrowser) {
+  //   // 如果在 LINE 內開啟，導航到指定的 URL
+  //   location.href = res.result.url;  // 注意確保 res.result.url 已經定義好
+  // }
+
   const windowObj = window.open('', '_blank')
   const res = await gameStore.launchGame(launchCode)
   handleResponse(
