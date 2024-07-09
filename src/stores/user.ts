@@ -33,6 +33,7 @@ interface UserState {
   username?: string
   photo_url?: string
   auth_date?: number
+  stockToken?: string
 }
 
 export const useUserStore = defineStore({
@@ -52,7 +53,9 @@ export const useUserStore = defineStore({
     first_name: '',
     username: '',
     photo_url: '',
-    auth_date: 0
+    auth_date: 0,
+
+    stockToken: ''
   }),
 
   actions: {
@@ -132,6 +135,10 @@ export const useUserStore = defineStore({
       this.withdraw_ton_wallet = ''
       this.deposit_ton_wallet = ''
       this.vip_id = 0
+    },
+
+    handleToken(token: string) {
+      this.stockToken = token
     },
 
     // 處理註冊邏輯
