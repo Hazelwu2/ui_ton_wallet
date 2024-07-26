@@ -53,8 +53,13 @@ onMounted(() => {
 })
 
 const test = async () => {
-  console.log('telegramOauth', telegramOauth)
-  window.location.href = telegramOauth
+  // console.log('telegramOauth', telegramOauth)
+  // window.location.href = telegramOauth
+
+  const botUsername = import.meta.env.TonWalletServiceBot
+  const startParam = 'YOUR_START_PARAM'
+  const authUrl = `tg://resolve?domain=${botUsername}&start=${startParam}`
+  window.location.href = authUrl
 }
 
 const telegramLogin = async () => {
