@@ -328,6 +328,7 @@ onUnmounted(() => {
   &__name {
     width: 100%;
     text-align: center;
+    color: white;
   }
 }
 
