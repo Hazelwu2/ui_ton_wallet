@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
 // Utils
-import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
+import {
+  loadTelegramWidget,
+  telegramOauth,
+  usingCodeToGetAccessToken
+} from '@/utils/telegram/telegramLogin'
 import { handleResponse } from '@/utils/axios/resUtils'
 import message from '@/utils/message'
 // Pinia
@@ -44,7 +48,14 @@ onMounted(() => {
       loadTelegramWidget()
     })
   }
+
+  usingCodeToGetAccessToken()
 })
+
+const test = async () => {
+  console.log('telegramOauth', telegramOauth)
+  window.location.href = telegramOauth
+}
 
 const telegramLogin = async () => {
   window.Telegram.Login.auth(
@@ -245,6 +256,15 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
         <v-card min-width="500">
           <v-list>
             <v-list-item v-if="!isLogin">
+              <div
+                class="cursor-pointer user-area mb-1"
+                @click="test"
+              >
+                <div color="info">
+                  <v-icon>mdi-login</v-icon>
+                  測試
+                </div>
+              </div>
               <div
                 @click="telegramLogin"
                 class="cursor-pointer user-area mb-1"
