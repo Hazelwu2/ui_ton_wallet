@@ -113,7 +113,7 @@ const fetchStockRealPrice = async () => {
     if (now.isAfter(marketCloseTime)) {
       start_date = now.format(date)
     } else {
-      start_date = now.subtract(1, 'day').format(date)
+      start_date = now.subtract(3, 'day').format(date)
     }
 
     return start_date
