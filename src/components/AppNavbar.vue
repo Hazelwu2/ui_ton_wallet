@@ -3,7 +3,7 @@ import { ref, onMounted, nextTick } from 'vue'
 // Utils
 import {
   loadTelegramWidget,
-  telegramOauth,
+  getTelegramAuthUrl,
   usingCodeToGetAccessToken
 } from '@/utils/telegram/telegramLogin'
 import { handleResponse } from '@/utils/axios/resUtils'
@@ -53,17 +53,11 @@ onMounted(() => {
 })
 
 const test = async () => {
-  // console.log('telegramOauth', telegramOauth)
-  // window.location.href = telegramOauth
+  const telegramUrl = getTelegramAuthUrl()
+  console.log('telegramUrl', telegramUrl)
 
-  // const botUsername = import.meta.env.VITE_TELEGRAM_BOT_ID
-  // const startParam = 'YOUR_START_PARAM'
-  // const authUrl = `tg://resolve?domain=${botUsername}&start=${startParam}`
-
-  const botId = import.meta.env.VITE_TELEGRAM_BOT_ID // 替換為你的 Telegram Bot ID
-  const redirectUrl = encodeURIComponent(location.href) // 替換為你的重定向 URL
-  console.log('redirectUrl', redirectUrl)
-  location.href = `tg://resolve?domain=oauth?bot_id=${botId}&origin=${redirectUrl}`
+  // 在新窗口中打開認證頁面
+  window.open(telegramUrl, '_blank', 'width=600,height=600')
 }
 
 const telegramLogin = async () => {
