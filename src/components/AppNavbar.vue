@@ -206,8 +206,8 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
       />
       <!-- Telegram 按鈕 End -->
       <div clsas="d-flex flex-column">
-        <span class="d-flex">
-          <v-icon>mdi-wallet-outline</v-icon>
+        <span class="d-flex" style="color: #fff">
+          <v-icon color="white">mdi-wallet-outline</v-icon>
           目前余额 TON {{ balance }}
           <v-btn
             icon="mdi-refresh"
@@ -216,7 +216,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
             @click="getPlayerInfo"
           ></v-btn>
         </span>
-        <span class="d-flex">
+        <span class="d-flex" style="color: #fff">
           <v-icon>mdi-wallet-outline</v-icon>
           冻结余额 TON {{ balance_frozen }}
         </span>
