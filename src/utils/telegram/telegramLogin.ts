@@ -3,6 +3,55 @@
 */
 
 const botName = import.meta.env.VITE_TELEGRAM_BOT_NAME
+const botID = import.meta.env.VITE_TELEGRAM_BOT_ID
+const botSecret = import.meta.env.VITE_TELEGRAM_BOT_SECRET
+const redirectUrl = location.href
+const REDIRECT_URI = `https://ui-ton-wallet.vercel.app/`
+export const telegramOauth = `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`
+
+
+export function usingCodeToGetAccessToken() {
+  const urlParams = new URLSearchParams(
+    window.location.search
+  )
+  const code = urlParams.get('code')
+
+  if (code) {
+    const data = {
+      client_id: botID,
+      client_secret: botSecret,
+      code,
+      redirect_uri: REDIRECT_URI,
+      grant_type: 'authorization_code',
+    }
+
+    const tokenUrl = `https://oauth.telegram.org/token`;
+
+    fetch(tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(data => {
+        const accessToken = data.access_token;
+        // 使用訪問令牌獲取用戶信息
+        fetch(`https://api.telegram.org/bot${botID}:${accessToken}/getMe`)
+          .then(response => response.json())
+          .then(userInfo => {
+            console.log('======================')
+            console.error('User Info:', userInfo);
+            console.log('======================')
+          });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+}
 
 /**
  * Telegram 回傳的 USER 資訊
