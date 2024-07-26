@@ -56,10 +56,14 @@ const test = async () => {
   // console.log('telegramOauth', telegramOauth)
   // window.location.href = telegramOauth
 
-  const botUsername = import.meta.env.TonWalletServiceBot
-  const startParam = 'YOUR_START_PARAM'
-  const authUrl = `tg://resolve?domain=${botUsername}&start=${startParam}`
-  window.location.href = authUrl
+  // const botUsername = import.meta.env.VITE_TELEGRAM_BOT_ID
+  // const startParam = 'YOUR_START_PARAM'
+  // const authUrl = `tg://resolve?domain=${botUsername}&start=${startParam}`
+
+  const botId = import.meta.env.VITE_TELEGRAM_BOT_ID // 替換為你的 Telegram Bot ID
+  const redirectUrl = encodeURIComponent(location.href) // 替換為你的重定向 URL
+  console.log('redirectUrl', redirectUrl)
+  location.href = `tg://resolve?domain=oauth?bot_id=${botId}&origin=${redirectUrl}`
 }
 
 const telegramLogin = async () => {
