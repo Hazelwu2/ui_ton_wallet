@@ -21,7 +21,10 @@ export const getTelegramAuthUrl = () => {
     return `tg://resolve?domain=oauth?bot_id=${botID}&origin=${redirectUrl}`;
   } else {
     // 桌面設備使用網頁版 Telegram
-    return `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`;
+    const publicKey = '213984ujqwkafjnaiow4uy5q398498374*(#4@@DERAW2413AWSR('
+    const authUrl = `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write&public_key=${publicKey}`;
+    return authUrl
+    // return `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`;
   }
 }
 
