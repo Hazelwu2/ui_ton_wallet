@@ -9,6 +9,22 @@ const redirectUrl = location.href
 const REDIRECT_URI = `https://ui-ton-wallet.vercel.app/`
 export const telegramOauth = `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`
 
+export const getTelegramAuthUrl = () => {
+  const redirectUrl = encodeURIComponent('https://ui-ton-wallet.vercel.app/')
+
+  // 檢查是否在移動設備上
+  const isMobile = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  console.log('isMobile', isMobile)
+
+  if (isMobile) {
+    // 移動設備使用 tg:// 協議
+    return `tg://resolve?domain=oauth?bot_id=${botID}&origin=${redirectUrl}`;
+  } else {
+    // 桌面設備使用網頁版 Telegram
+    return `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`;
+  }
+}
+
 
 export function usingCodeToGetAccessToken() {
   const urlParams = new URLSearchParams(
