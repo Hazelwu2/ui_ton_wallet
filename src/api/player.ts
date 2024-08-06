@@ -2,10 +2,12 @@ import request from '@/utils/axios/request'
 
 enum Api {
   Register = '/api/v1/m/player/reg',
+  TgAuth = '/api/v1/tg/auth',
   Login = '/api/v1/m/player/login',
   GetPlayerInfo = '/api/v1/m/player/info',
   UpdatePlayerInfo = '/api/v1/m/player/update',
-  TonWalletWithdraw = '/api/v1/m/trans/ton_withdraw'
+  CryptoWalletWithdraw = '/m/trans/crypto_withdraw'
+
 }
 
 // 定義註冊資料
@@ -32,22 +34,21 @@ export interface PlayerLoginResponse {
     account: string
     balance: number
     balance_frozen: number
-    withdraw_ton_wallet: string
-    deposit_ton_wallet: string
-    ton_wallet?: string
+    withdraw_wallet: string
+    deposit_wallet: string
     vip_id: number
     status: string
   }
 }
 
-export interface TonWalletWithdrawData {
+export interface CryptoWalletWithdrawData {
   m_code: string
   account: string
   password: string
   transfer_amount: number
 }
 
-export interface TonWalletWithdrawResponse {
+export interface CryptoWalletWithdrawResponse {
   code: string
   message: string
   trace?: string
@@ -57,8 +58,8 @@ export interface PlayerInfo {
   account: string
   balance: number
   balance_frozen: number
-  withdraw_ton_wallet: string
-  deposit_ton_wallet: string
+  withdraw_wallet: string
+  deposit_wallet: string
   vip_id: number
   status: string
 }
@@ -75,13 +76,25 @@ export interface UpdatePlayerInfoParams {
   account: string
   password: string
   nickname?: string
-  withdraw_ton_wallet: string
-  deposit_ton_wallet?: string
+  withdraw_wallet: string
+  deposit_wallet?: string
 }
 
 export interface UpdatePlayerInfoResponse extends PlayerRegisterResponse {
 
 }
+/** 
+ * @description: 註冊
+ */
+export function TgAuthAPI(data: PlayerRegisterData): Promise<PlayerRegisterResponse> {
+  return request({
+    url: Api.TgAuth,
+    method: 'post',
+    data
+  })
+}
+
+
 /** 
  * @description: 註冊
  */
@@ -129,9 +142,9 @@ export function updatePlayerInfoAPI(data: UpdatePlayerInfoParams): Promise<Updat
 /** 
  * @description: Ton 錢包下分
  */
-export function tonWalletWithdrawAPI(data: TonWalletWithdrawData): Promise<TonWalletWithdrawResponse> {
+export function cryptoWalletWithdrawAPI(data: CryptoWalletWithdrawData): Promise<CryptoWalletWithdrawResponse> {
   return request({
-    url: Api.TonWalletWithdraw,
+    url: Api.CryptoWalletWithdraw,
     method: 'post',
     data
   })

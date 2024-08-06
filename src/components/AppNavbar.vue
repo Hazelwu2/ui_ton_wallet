@@ -53,8 +53,7 @@ onMounted(() => {
 })
 
 const test = async () => {
-  const telegramUrl = getTelegramAuthUrl()
-  console.log('telegramUrl', telegramUrl)
+  const telegramUrl = getTelegramAuthUrl(telegramLogin)
 
   // 在新窗口中打開認證頁面
   window.open(telegramUrl, '_blank', 'width=600,height=600')
@@ -265,7 +264,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
               >
                 <div color="info">
                   <v-icon>mdi-login</v-icon>
-                  測試
+                  測試登录
                 </div>
               </div>
               <div

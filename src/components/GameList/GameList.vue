@@ -90,7 +90,7 @@ const launchGame = async (
     return
   }
 
-  if (!userStore?.withdraw_ton_wallet) {
+  if (!userStore?.withdraw_wallet) {
     showAlert({
       icon: 'fail',
       text: message.noHaveWallet

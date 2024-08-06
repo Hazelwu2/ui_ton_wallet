@@ -1,11 +1,14 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
+// import { useDialogStore } from '@/stores/dialog'
 
 // create an axios instance
 const service: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 500000
 })
+// Pinia Vuex
+// const dialogStore = useDialogStore()
 
 /*
   [請求超時設置]
@@ -50,7 +53,7 @@ service.interceptors.response.use(
       // 隱藏 PreLoader
     }
   },
-  // [Error] Catc
+  // [Error] Catch
   async (error) => {
     /*
       Axios error 屬性
@@ -66,7 +69,10 @@ service.interceptors.response.use(
 
     // 捕捉到錯誤，像是 500 錯誤，會執行以下程式碼
     console.error('[request.js:86] DEBUG: ⛔ 請求發生錯誤：' + error)
-
+    // dialogStore.showAlert({
+    //   icon: 'fail',
+    //   text: '发生错误'
+    // })
     return Promise.reject(error)
   }
 )

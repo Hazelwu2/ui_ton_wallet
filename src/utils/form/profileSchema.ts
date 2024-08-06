@@ -21,7 +21,7 @@ const addressValidate = async (address: string) => {
 
 // 定義驗證
 export const ProfileSchema = yup.object({
-  withdraw_ton_wallet: yup
+  withdraw_wallet: yup
     .string()
     .required('钱包地址是必须的')
     .max(48, '钱包地址不能超过48个字')

@@ -8,14 +8,14 @@ import message from '@/utils/message'
 // Pinia Vuex
 const dialogStore = useDialogStore()
 const userStore = useUserStore()
-const { deposit_ton_wallet } = userStore
+const { deposit_wallet } = userStore
 
 const { showDepositDialog } = storeToRefs(dialogStore)
 
 const PRE_FIX = 'ton://transfer/'
-const qrCodeValue = `${PRE_FIX}${deposit_ton_wallet}`
+const qrCodeValue = `${PRE_FIX}${deposit_wallet}`
 // 生成 Ton Wallet 的 URI 链接
-const tonWalletUri = `${PRE_FIX}${deposit_ton_wallet}`
+const tonWalletUri = `${PRE_FIX}${deposit_wallet}`
 
 // 打开 Ton Wallet 或 Ton Keeper
 const openTonWallet = () => {
@@ -40,14 +40,12 @@ const openTonWallet = () => {
 
 // 复制钱包地址到剪贴板
 const copyWalletAddress = () => {
-  navigator.clipboard
-    .writeText(deposit_ton_wallet)
-    .then(() => {
-      dialogStore.showAlert({
-        icon: 'done',
-        text: message.copy.success
-      })
+  navigator.clipboard.writeText(deposit_wallet).then(() => {
+    dialogStore.showAlert({
+      icon: 'done',
+      text: message.copy.success
     })
+  })
 }
 
 const warningTextList = [
@@ -77,7 +75,7 @@ const warningTextList = [
           target="_blank"
           style="cursor: pointer"
         >
-          {{ deposit_ton_wallet }}
+          {{ deposit_wallet }}
         </a>
         <span
           @click="copyWalletAddress"

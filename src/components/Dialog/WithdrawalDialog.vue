@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 import { handleResponse } from '@/utils/axios/resUtils'
 import type {
   GetPlayerInfoResponse,
-  TonWalletWithdrawResponse
+  CryptoWalletWithdrawResponse
 } from '@/api/player'
 // Form Validate
 import { useField, useForm } from 'vee-validate'
@@ -16,8 +16,7 @@ import message from '@/utils/message'
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
-const { balance, withdraw_ton_wallet } =
-  storeToRefs(userStore)
+const { balance, withdraw_wallet } = storeToRefs(userStore)
 const { showWithdrawalDialog } = storeToRefs(dialogStore)
 
 // 使用 vee-validate 管理表單
@@ -70,7 +69,9 @@ const withdrawalSuccess = async () => {
   dialogStore.switchWithdrawalDialog()
 }
 
-const withdrawalFail = (res: TonWalletWithdrawResponse) => {
+const withdrawalFail = (
+  res: CryptoWalletWithdrawResponse
+) => {
   dialogStore.showAlert({
     icon: 'fail',
     text: message.common.fail(res)
@@ -89,7 +90,7 @@ const submit = handleSubmit(async (values) => {
   )
 
   handleResponse(
-    res as TonWalletWithdrawResponse,
+    res as CryptoWalletWithdrawResponse,
     withdrawalSuccess,
     withdrawalFail
   )
@@ -123,7 +124,7 @@ watch(showWithdrawalDialog, (newValue) => {
         <form @submit.prevent="submit">
           <!-- 錢包地址輸入 -->
           <v-text-field
-            v-model="withdraw_ton_wallet"
+            v-model="withdraw_wallet"
             label="錢包地址"
             outlined
             disabled

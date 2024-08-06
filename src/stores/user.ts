@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 import {
   playerRegisterAPI, playerLoginAPI,
-  tonWalletWithdrawAPI,
+  cryptoWalletWithdrawAPI,
   updatePlayerInfoAPI,
   getPlayerInfoAPI
 } from '@/api/player'
 
 import type {
-  TonWalletWithdrawResponse,
+  CryptoWalletWithdrawResponse,
   PlayerRegisterResponse,
   PlayerLoginResponse,
   UpdatePlayerInfoParams,
@@ -25,8 +25,8 @@ interface UserState {
   password: string,
   nickname?: string
   balance: number
-  withdraw_ton_wallet: string
-  deposit_ton_wallet: string
+  withdraw_wallet: string
+  deposit_wallet: string
   balance_frozen?: number
   vip_id?: number
   first_name?: string
@@ -44,8 +44,8 @@ export const useUserStore = defineStore({
     password: import.meta.env.VITE_PLAYER_PASSWORD,
     account: '',
     balance: 0,
-    withdraw_ton_wallet: '',
-    deposit_ton_wallet: '',
+    withdraw_wallet: '',
+    deposit_wallet: '',
     nickname: '',
     balance_frozen: 0,
     vip_id: 0,
@@ -69,7 +69,7 @@ export const useUserStore = defineStore({
       console.log('Deposit clicked')
     },
 
-    async handleWithdraw(transfer_amount: number): Promise<TonWalletWithdrawResponse | undefined> {
+    async handleWithdraw(transfer_amount: number): Promise<CryptoWalletWithdrawResponse | undefined> {
       if (!this.account) throw new Error('handleWithdraw 發生錯誤：缺少參數 account')
 
       const params = {
@@ -80,7 +80,7 @@ export const useUserStore = defineStore({
       }
 
       // 請求 API
-      const res = await tonWalletWithdrawAPI(params) as TonWalletWithdrawResponse
+      const res = await cryptoWalletWithdrawAPI(params) as CryptoWalletWithdrawResponse
       return res
     },
 
@@ -109,9 +109,9 @@ export const useUserStore = defineStore({
         const res = await getPlayerInfoAPI(params)
 
         // 更新 state 中的資料
-        if (res?.result && res?.result?.withdraw_ton_wallet) {
+        if (res?.result && res?.result?.withdraw_wallet) {
           // 更新提款帳號、餘額、凍結餘額
-          this.withdraw_ton_wallet = res?.result?.withdraw_ton_wallet
+          this.withdraw_wallet = res?.result?.withdraw_wallet
           this.balance = res?.result?.balance
           this.balance_frozen = res?.result?.balance_frozen
         }
@@ -132,8 +132,8 @@ export const useUserStore = defineStore({
       this.account = ''
       this.balance = 0
       this.balance_frozen = 0
-      this.withdraw_ton_wallet = ''
-      this.deposit_ton_wallet = ''
+      this.withdraw_wallet = ''
+      this.deposit_wallet = ''
       this.vip_id = 0
     },
 
@@ -185,8 +185,8 @@ export const useUserStore = defineStore({
         this.isLogin = true
         this.account = res.result.account ?? ''
         this.balance = res.result.balance ?? 0
-        this.deposit_ton_wallet = res.result.deposit_ton_wallet ?? ''
-        this.withdraw_ton_wallet = res.result.withdraw_ton_wallet ?? ''
+        this.deposit_wallet = res.result.deposit_wallet ?? ''
+        this.withdraw_wallet = res.result.withdraw_wallet ?? ''
         this.balance_frozen = res.result.balance_frozen ?? 0
         this.vip_id = res.result.vip_id
       }

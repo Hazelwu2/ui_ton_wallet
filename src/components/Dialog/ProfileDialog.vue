@@ -31,11 +31,11 @@ const { handleSubmit } = useForm({
 const {
   value: withdrawTonWalletFieldValue,
   errorMessage: withdrawTonWalletErrorMsg
-} = useField<string>('withdraw_ton_wallet')
+} = useField<string>('withdraw_wallet')
 
 // 表單欄位初始化
 withdrawTonWalletFieldValue.value =
-  userStore.withdraw_ton_wallet ?? ''
+  userStore.withdraw_wallet ?? ''
 
 // 提交表單
 const submit = handleSubmit(async (values) => {
@@ -43,7 +43,7 @@ const submit = handleSubmit(async (values) => {
     m_code: import.meta.env.VITE_M_CODE,
     account: account.value,
     password: password.value,
-    withdraw_ton_wallet: values.withdraw_ton_wallet
+    withdraw_wallet: values.withdraw_wallet
   }
 
   const res = (await updatePlayerInfoAPI(

@@ -9,7 +9,7 @@ const redirectUrl = location.href
 const REDIRECT_URI = `https://ui-ton-wallet.vercel.app/`
 export const telegramOauth = `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`
 
-export const getTelegramAuthUrl = () => {
+export const getTelegramAuthUrl = (callback: any) => {
   const redirectUrl = encodeURIComponent('https://ui-ton-wallet.vercel.app/')
 
   // 檢查是否在移動設備上
@@ -23,10 +23,10 @@ export const getTelegramAuthUrl = () => {
     return authUrl
   } else {
     // 桌面設備使用網頁版 Telegram
-    const publicKey = '213984ujqwkafjnaiow4uy5q398498374*(#4@@DERAW2413AWSR('
-    const authUrl = `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write&public_key=${publicKey}`;
-    return authUrl
-    // return `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write`;
+    callback()
+    // const publicKey = '213984ujqwkafjnaiow4uy5q398498374*(#4@@DERAW2413AWSR('
+    // const authUrl = `https://oauth.telegram.org/auth?bot_id=${botID}&origin=${redirectUrl}&request_access=write&public_key=${publicKey}`;
+    // return authUrl
   }
 }
 
