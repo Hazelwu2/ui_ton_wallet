@@ -99,6 +99,7 @@ export function loadTelegramWidget() {
   const container = document.getElementById('telegram-login-container')
   if (container && !document.getElementById('telegram-login-script')) {
     const script = document.createElement('script')
+    const m_code = import.meta.env.VITE_M_CODE
     script.id = 'telegram-login-script'
     script.async = true
     script.src = 'https://telegram.org/js/telegram-widget.js?22'
@@ -106,7 +107,7 @@ export function loadTelegramWidget() {
     script.setAttribute('data-size', 'small')
     script.setAttribute('data-userpic', 'false')
     script.setAttribute('data-radius', '10')
-    script.setAttribute('data-auth-url', 'https://dev.merchant.gplay.gfclub.online/api/v1/tg/auth')
+    script.setAttribute('data-auth-url', `https://dev.merchant.gplay.gfclub.online/api/v1/tg/auth?m_code=${m_code}`)
     // script.setAttribute('data-onauth', 'onTelegramAuth(user)')
     container.appendChild(script)
   }
