@@ -23,8 +23,8 @@ const addressValidate = async (address: string) => {
 export const ProfileSchema = yup.object({
   withdraw_wallet: yup
     .string()
-    .required('钱包地址是必须的')
-    .max(48, '钱包地址不能超过48个字')
+    .required('TRC20 钱包地址是必须的')
+    .max(34, '钱包地址不能超过34个字')
   // .test('is-valid-address', '钱包地址格式错误', async (value) => {
   //   if (value) {
   //     const test = await addressValidate(value)
