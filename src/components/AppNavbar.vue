@@ -258,7 +258,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
         <v-card min-width="500">
           <v-list>
             <v-list-item v-if="!isLogin">
-              <div
+              <!-- <div
                 class="cursor-pointer user-area mb-1"
                 @click="test"
               >
@@ -266,7 +266,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
                   <v-icon>mdi-login</v-icon>
                   測試登录
                 </div>
-              </div>
+              </div> -->
               <div
                 @click="telegramLogin"
                 class="cursor-pointer user-area mb-1"
