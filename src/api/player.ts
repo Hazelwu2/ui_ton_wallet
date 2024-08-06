@@ -7,7 +7,6 @@ enum Api {
   GetPlayerInfo = '/api/v1/m/player/info',
   UpdatePlayerInfo = '/api/v1/m/player/update',
   CryptoWalletWithdraw = '/m/trans/crypto_withdraw'
-
 }
 
 // 定義註冊資料
@@ -140,7 +139,7 @@ export function updatePlayerInfoAPI(data: UpdatePlayerInfoParams): Promise<Updat
 }
 
 /** 
- * @description: Ton 錢包下分
+ * @description: 錢包下分
  */
 export function cryptoWalletWithdrawAPI(data: CryptoWalletWithdrawData): Promise<CryptoWalletWithdrawResponse> {
   return request({
