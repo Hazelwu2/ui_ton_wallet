@@ -106,7 +106,8 @@ export function loadTelegramWidget() {
     script.setAttribute('data-size', 'small')
     script.setAttribute('data-userpic', 'false')
     script.setAttribute('data-radius', '10')
-    script.setAttribute('data-onauth', 'onTelegramAuth(user)')
+    script.setAttribute('data-auth-url', 'https://dev.merchant.gplay.gfclub.online/api/v1/tg/auth')
+    // script.setAttribute('data-onauth', 'onTelegramAuth(user)')
     container.appendChild(script)
   }
 }
