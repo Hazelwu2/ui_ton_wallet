@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-// Define the async address validation function
+// 驗證是否為 Ton 錢包
 const addressValidate = async (address: string) => {
   try {
     const response = await fetch(
@@ -25,11 +25,11 @@ export const ProfileSchema = yup.object({
     .string()
     .required('钱包地址是必须的')
     .max(48, '钱包地址不能超过48个字')
-    .test('is-valid-address', '钱包地址格式错误', async (value) => {
-      if (value) {
-        const test = await addressValidate(value)
-        return test
-      }
-      return true
-    })
+  // .test('is-valid-address', '钱包地址格式错误', async (value) => {
+  //   if (value) {
+  //     const test = await addressValidate(value)
+  //     return test
+  //   }
+  //   return true
+  // })
 })
