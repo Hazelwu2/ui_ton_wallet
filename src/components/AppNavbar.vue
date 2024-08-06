@@ -221,7 +221,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
       <div clsas="d-flex flex-column">
         <span class="d-flex" style="color: #fff">
           <v-icon color="white">mdi-wallet-outline</v-icon>
-          目前余额 TON {{ balance }}
+          目前余额 {{ balance }}
           <v-btn
             icon="mdi-refresh"
             variant="text"
@@ -231,7 +231,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
         </span>
         <span class="d-flex" style="color: #fff">
           <v-icon>mdi-wallet-outline</v-icon>
-          冻结余额 TON {{ balance_frozen }}
+          冻结余额 {{ balance_frozen }}
         </span>
       </div>
 
