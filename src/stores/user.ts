@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useGameStore } from './game'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 import {
   playerRegisterAPI, playerLoginAPI,
@@ -34,6 +35,7 @@ interface UserState {
   photo_url?: string
   auth_date?: number
   stockToken?: string
+  lobby_url?: string
 }
 
 export const useUserStore = defineStore({
@@ -55,7 +57,9 @@ export const useUserStore = defineStore({
     photo_url: '',
     auth_date: 0,
 
-    stockToken: ''
+    stockToken: '',
+    // xgd 遊戲大廳位置
+    lobby_url: ''
   }),
 
   actions: {
@@ -146,7 +150,6 @@ export const useUserStore = defineStore({
       user: TelegramUserData
     ): Promise<PlayerRegisterResponse | undefined> {
       // Telegram 回傳資料
-      console.log('user', user)
       this.first_name = user.first_name
       this.username = user.username
       this.photo_url = user.photo_url
@@ -171,6 +174,14 @@ export const useUserStore = defineStore({
       // 若已註冊過帳號已存在、註冊成功，請求登入
       if (accounIsExist || registerSuccess) {
         const res = await this.handleLogin(params)
+        // 請求啟動遊戲，取得 XGD 遊戲大廳的遊戲連結
+        const gameStore = useGameStore()
+        const launchGameRes = await gameStore.launchGame('xgd_lobby')
+        if (launchGameRes && launchGameRes.result) {
+          this.lobby_url = launchGameRes?.result.url
+        }
+
+        // 返回登入的 Response
         return res
       }
 
