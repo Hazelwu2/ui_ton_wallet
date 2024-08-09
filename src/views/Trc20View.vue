@@ -3,6 +3,7 @@
 import AppNavbar from '@/components/AppNavbar.vue'
 // Utils
 import { handleResponse } from '@/utils/axios/resUtils'
+import message from '@/utils/message'
 // Dialog
 import Alert from '@/components/Dialog/ShowAlert.vue'
 import DepositDialog from '@/components/Dialog/DepositDialog.vue'
@@ -14,6 +15,7 @@ import { useDialogStore } from '@/stores/dialog'
 import { useUserStore } from '@/stores/user'
 // Type
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
+import type { PlayerRegisterResponse } from '@/api/player'
 
 const dialogStore = useDialogStore()
 const userStore = useUserStore()
