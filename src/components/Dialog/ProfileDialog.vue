@@ -29,12 +29,12 @@ const { handleSubmit } = useForm({
 
 // 定義表單欄位
 const {
-  value: withdrawTonWalletFieldValue,
-  errorMessage: withdrawTonWalletErrorMsg
+  value: withdrawWalletFieldValue,
+  errorMessage: withdrawWalletErrorMsg
 } = useField<string>('withdraw_wallet')
 
 // 表單欄位初始化
-withdrawTonWalletFieldValue.value =
+withdrawWalletFieldValue.value =
   userStore.withdraw_wallet ?? ''
 
 // 提交表單
@@ -109,9 +109,9 @@ watch(showProfileDialog, (newValue) => {
           />
 
           <v-text-field
-            v-model="withdrawTonWalletFieldValue"
-            :counter="48"
-            :error-messages="withdrawTonWalletErrorMsg"
+            v-model="withdrawWalletFieldValue"
+            :counter="34"
+            :error-messages="withdrawWalletErrorMsg"
             label="錢包地址"
             required
           />
