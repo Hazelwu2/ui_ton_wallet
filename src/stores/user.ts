@@ -203,6 +203,15 @@ export const useUserStore = defineStore({
       }
 
       return res
+    },
+
+    async getXgdLobby() {
+      // 請求啟動遊戲，取得 XGD 遊戲大廳的遊戲連結
+      const gameStore = useGameStore()
+      const launchGameRes = await gameStore.launchGame('xgd_lobby')
+      if (launchGameRes && launchGameRes.result) {
+        this.lobby_url = launchGameRes?.result.url
+      }
     }
   },
 

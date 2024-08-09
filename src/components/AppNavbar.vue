@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
 // Utils
 import {
   loadTelegramWidget,
@@ -27,7 +27,8 @@ const {
   first_name,
   isLogin,
   account,
-  balance
+  balance,
+  lobby_url
 } = storeToRefs(userStore)
 // Action
 const { handleRegister, ifUserIsLogin } = userStore
@@ -42,12 +43,12 @@ window.onTelegramAuth = (user: TelegramUserData) => {
 const isRefreshing = ref(false)
 
 onMounted(() => {
-  // if (!isLogin.value) {
   // 載入 Telegram 第三方登入
-  // nextTick(() => {
   loadTelegramWidget()
-  // })
-  // }
+
+  if (isLogin && !lobby_url) {
+    userStore.getXgdLobby()
+  }
 
   usingCodeToGetAccessToken()
 })
