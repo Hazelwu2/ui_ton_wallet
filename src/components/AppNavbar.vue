@@ -42,12 +42,12 @@ window.onTelegramAuth = (user: TelegramUserData) => {
 const isRefreshing = ref(false)
 
 onMounted(() => {
-  if (!isLogin.value) {
-    // 載入 Telegram 第三方登入
-    nextTick(() => {
-      loadTelegramWidget()
-    })
-  }
+  // if (!isLogin.value) {
+  // 載入 Telegram 第三方登入
+  // nextTick(() => {
+  loadTelegramWidget()
+  // })
+  // }
 
   usingCodeToGetAccessToken()
 })
