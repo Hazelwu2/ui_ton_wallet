@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Trc20View from '../views/Trc20View.vue'
+import UserActionViewInGame from '../views/UserActionViewInGame.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +10,11 @@ const router = createRouter({
       path: '/',
       name: 'trc',
       component: Trc20View
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: UserActionViewInGame
     },
     {
       path: '/home',

@@ -12,7 +12,8 @@ import type {
 import { useField, useForm } from 'vee-validate'
 import { WithdrawalSchema } from '@/utils/form/withdrawalSchema'
 import message from '@/utils/message'
-
+// API
+import { updatePlayerInfoAPI } from '@/api/player'
 // Pinia Vuex
 const userStore = useUserStore()
 const dialogStore = useDialogStore()
@@ -23,24 +24,30 @@ const { showWithdrawalDialog } = storeToRefs(dialogStore)
 const { handleSubmit, handleReset } = useForm({
   validationSchema: WithdrawalSchema(balance.value)
 })
+
 // 定義表單欄位
 const {
   value: transferAmountFieldValue,
   errorMessage: transferAmountErrorMsg
 } = useField<string>('transfer_amount')
+const {
+  value: withdrawWalletFieldValue,
+  errorMessage: withdrawErrorMsg
+} = useField<string>('withdraw_wallet')
 
 // Data
 const tonToUsdRate = ref(0)
+const isSubmitting = ref(false)
 
-const transferAmountValue = computed(
-  () => parseFloat(transferAmountFieldValue.value) || 0
-)
-const isTransferAmountValid = computed(
-  () => transferAmountValue.value !== 0
-)
-const usdValue = computed(
-  () => transferAmountValue.value * tonToUsdRate.value
-)
+// const transferAmountValue = computed(
+//   () => parseFloat(transferAmountFieldValue.value) || 0
+// )
+// const isTransferAmountValid = computed(
+//   () => transferAmountValue.value !== 0
+// )
+// const usdValue = computed(
+//   () => transferAmountValue.value * tonToUsdRate.value
+// )
 
 // Dummy API endpoint for demonstration
 const fetchTonToUsdRate = async () => {
@@ -61,10 +68,15 @@ const withdrawalSuccess = async () => {
     text: message.withdrawal.success
   })
 
+  // 更新用户余额
+  await userStore.getPlayerInfo()
+
   // 重置表單
   handleReset()
+
   // 重新取得 User 資料
   await userStore.getPlayerInfo()
+
   // 關閉燈箱
   dialogStore.switchWithdrawalDialog()
 }
@@ -79,21 +91,77 @@ const withdrawalFail = (
 }
 
 onMounted(() => {
-  fetchTonToUsdRate()
+  // fetchTonToUsdRate()
   getPlayerInfo()
+
+  // 填寫 USER 個人的錢包地址預設值
+  withdrawWalletFieldValue.value =
+    userStore.withdraw_wallet || ''
 })
 
 // 提交表單
 const submit = handleSubmit(async (values) => {
-  const res = await userStore.handleWithdraw(
-    values.transfer_amount
+  // 检查 userStore 中的 withdraw_wallet 是否为空
+  console.log(
+    'userStore.withdraw_wallet',
+    userStore.withdraw_wallet
   )
+  console.log(
+    'values.withdraw_wallet',
+    values.withdraw_wallet
+  )
+  if (
+    !userStore.withdraw_wallet ||
+    userStore.withdraw_wallet !== values.withdraw_wallet
+  ) {
+    try {
+      const params = {
+        m_code: import.meta.env.VITE_M_CODE,
+        account: userStore.account,
+        password: userStore.password,
+        withdraw_wallet: values.withdraw_wallet
+      }
+      // 先更新用户的钱包地址
+      const updateRes = await updatePlayerInfoAPI(params)
+      if (updateRes.code !== '0') {
+        // 更新失败,显示错误信息
+        dialogStore.showAlert({
+          icon: 'fail',
+          text: updateRes.message || '更新钱包地址失败'
+        })
+        return
+      }
+      // 更新成功,更新 userStore 中的 withdraw_wallet
+      userStore.withdraw_wallet = values.withdraw_wallet
+    } catch (error) {
+      console.error('更新钱包地址失败:', error)
+      dialogStore.showAlert({
+        icon: 'fail',
+        text: '更新钱包地址时发生错误'
+      })
+      return
+    }
+  }
 
-  handleResponse(
-    res as CryptoWalletWithdrawResponse,
-    withdrawalSuccess,
-    withdrawalFail
-  )
+  if (isSubmitting.value) return
+
+  isSubmitting.value = true
+
+  try {
+    const res = await userStore.handleWithdraw(
+      values.transfer_amount
+    )
+
+    handleResponse(
+      res as CryptoWalletWithdrawResponse,
+      withdrawalSuccess,
+      withdrawalFail
+    )
+  } catch (error) {
+    console.error('提款失敗:', error)
+  } finally {
+    isSubmitting.value = false
+  }
 })
 
 const getPlayerInfo = async () => {
@@ -124,10 +192,10 @@ watch(showWithdrawalDialog, (newValue) => {
         <form @submit.prevent="submit">
           <!-- 錢包地址輸入 -->
           <v-text-field
-            v-model="withdraw_wallet"
+            v-model="withdrawWalletFieldValue"
+            :error-messages="withdrawErrorMsg"
             label="錢包地址"
             outlined
-            disabled
           />
 
           <!-- 轉帳金額輸入 -->
@@ -141,22 +209,22 @@ watch(showWithdrawalDialog, (newValue) => {
 
           <div class="ml-4 mt-1">
             <span style="color: red" class="caption">
-              目前余额 TON {{ balance }}
+              目前余额 USDT {{ balance.toFixed(2) }}
             </span>
             <br />
             <!-- 顯示 Ton 到 USD 匯率 -->
-            <span class="caption"
+            <!-- <span class="caption"
               >1 TON ≈
               {{ tonToUsdRate.toFixed(4) }} USD</span
-            >
-            <br />
+            > -->
+            <!-- <br />
             <span
               class="caption"
               v-show="isTransferAmountValid"
             >
               {{ transferAmountValue }} TON ≈
               {{ usdValue }} USD
-            </span>
+            </span> -->
           </div>
 
           <v-card-actions>

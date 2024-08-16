@@ -57,7 +57,6 @@ const warningTextList = [
   '错误的钱包地址可能导致资金无法找回。',
   '区块链转帐是不可撤回的，请确保所有信息正确无误。',
   '请勿向不明来源的钱包地址转帐，避免遭受诈骗或资金损失。',
-  '确认您要转帐的金额是否在允许的范围内。',
   '转帐过程中可能会产生网络费用，请确保余额充足以支付这些费用。'
 ]
 </script>
@@ -97,6 +96,7 @@ const warningTextList = [
             <li
               v-for="(item, i) in warningTextList"
               :key="i"
+              class="text-caption"
             >
               {{ item }}
             </li>

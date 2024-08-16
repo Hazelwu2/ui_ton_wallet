@@ -46,8 +46,6 @@ onMounted(() => {
   // 載入 Telegram 第三方登入
   loadTelegramWidget()
 
-  console.error('lobby_url', lobby_url?.value)
-  console.error('isLogin', isLogin.value, isLogin)
   if (isLogin.value && lobby_url && !lobby_url.value) {
     userStore.getXgdLobby()
   }

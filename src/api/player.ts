@@ -6,7 +6,7 @@ enum Api {
   Login = '/api/v1/m/player/login',
   GetPlayerInfo = '/api/v1/m/player/info',
   UpdatePlayerInfo = '/api/v1/m/player/update',
-  CryptoWalletWithdraw = '/m/trans/crypto_withdraw'
+  CryptoWalletWithdraw = '/api/v1/m/trans/crypto_withdraw'
 }
 
 // 定義註冊資料
