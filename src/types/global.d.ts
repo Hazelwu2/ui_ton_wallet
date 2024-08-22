@@ -7,6 +7,7 @@ declare global {
       Login: {
         auth(options: TelegramAuthOptions, callback: (data: TelegramUserData) => void): void
       }
-    }
+    },
+    CsCashierClose?: () => void;
   }
 }
