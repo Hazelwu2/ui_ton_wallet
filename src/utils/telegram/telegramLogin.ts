@@ -108,9 +108,24 @@ export function loadTelegramWidget() {
     script.setAttribute('data-userpic', 'false')
     script.setAttribute('data-radius', '10')
 
+    const authUrl = `https://dev.merchant.gplay.gfclub.online/api/v1/tg/auth?m_code=${m_code}`
     // 呼叫後端的 API
-    script.setAttribute('data-auth-url', `https://dev.merchant.gplay.gfclub.online/api/v1/tg/auth?m_code=${m_code}`)
+    script.setAttribute('data-auth-url', authUrl)
     // script.setAttribute('data-onauth', 'onTelegramAuth(user)')
+
+    script.onerror = (error) => {
+      console.error('Telegram widget script failed to load:', error)
+    }
+
+    script.onload = () => {
+      console.log('Telegram widget script loaded successfully')
+    }
+
     container.appendChild(script)
+
+    console.log('Telegram login button should be visible now')
+    console.log('Auth URL:', authUrl)
+  } else {
+    console.warn('Container not found or script already exists')
   }
 }
