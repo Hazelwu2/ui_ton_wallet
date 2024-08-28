@@ -3,7 +3,7 @@
 import Alert from '@/components/Dialog/ShowAlert.vue'
 import DepositDialog from '@/components/Dialog/DepositDialog.vue'
 import WithdrawalDialog from '@/components/Dialog/WithdrawalDialog.vue'
-import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
+// import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
 // Type
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 import type {
@@ -30,7 +30,7 @@ const dialogStore = useDialogStore()
 const { showAlert } = dialogStore
 const userStore = useUserStore()
 const {
-  deposit_wallet,
+  // deposit_wallet,
   // withdraw_wallet,
   balance,
   account,
@@ -64,15 +64,17 @@ const {
 withdrawWalletFieldValue.value =
   userStore.withdraw_wallet ?? ''
 
-// 复制钱包地址到剪贴板
-const copyWalletAddress = () => {
-  navigator.clipboard.writeText(deposit_wallet).then(() => {
-    dialogStore.showAlert({
-      icon: 'done',
-      text: message.copy.success
-    })
-  })
-}
+// // 复制钱包地址到剪贴板
+// const copyWalletAddress = () => {
+//   navigator.clipboard
+//     .writeText(deposit_wallet.value)
+//     .then(() => {
+//       dialogStore.showAlert({
+//         icon: 'done',
+//         text: message.copy.success
+//       })
+//     })
+// }
 
 const submitWithdrawal = handleWithdrawalSubmit(
   async (values) => {
@@ -83,18 +85,18 @@ const submitWithdrawal = handleWithdrawalSubmit(
   }
 )
 
-const submitProfile = handleProfileSubmit(
-  async (values) => {
-    const params = {
-      m_code: import.meta.env.VITE_M_CODE,
-      account: account.value,
-      password: '', // 假設你要在這裡更新密碼，需替換為實際的值
-      withdraw_wallet: values.withdraw_wallet
-    }
-    const res = await userStore.updatePlayerInfo(params)
-    // 處理回應
-  }
-)
+// const submitProfile = handleProfileSubmit(
+//   async (values) => {
+//     const params = {
+//       m_code: import.meta.env.VITE_M_CODE,
+//       account: account.value,
+//       password: '', // 假設你要在這裡更新密碼，需替換為實際的值
+//       withdraw_wallet: values.withdraw_wallet
+//     }
+//     const res = await userStore.updatePlayerInfo(params)
+//     // 處理回應
+//   }
+// )
 
 const handleDeposit = () => {
   if (!userStore.ifUserIsLogin()) {
