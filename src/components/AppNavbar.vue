@@ -47,6 +47,7 @@ onMounted(() => {
   loadTelegramWidget()
 
   if (isLogin.value && lobby_url && !lobby_url.value) {
+    getPlayerInfo()
     userStore.getXgdLobby()
   }
 
@@ -196,10 +197,10 @@ const getPlayerInfo = async () => {
 }
 
 const getPlayerInfoSuccess = () => {
-  showAlert({
-    icon: 'done',
-    text: '更新余额成功'
-  })
+  // showAlert({
+  //   icon: 'done',
+  //   text: '更新余额成功'
+  // })
 }
 const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
   showAlert({
@@ -218,34 +219,37 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
         id="telegram-login-container"
         class="align-center d-none"
       />
+
       <!-- Telegram 按鈕 End -->
-      <div clsas="d-flex flex-column">
-        <span class="d-flex" style="color: #fff">
-          <v-icon color="white">mdi-wallet-outline</v-icon>
-          目前余额 {{ balance }}
-          <v-btn
-            icon="mdi-refresh"
-            variant="text"
-            size="xs"
-            @click="getPlayerInfo"
-          ></v-btn>
-        </span>
-        <span class="d-flex" style="color: #fff">
-          <v-icon>mdi-wallet-outline</v-icon>
-          冻结余额 {{ balance_frozen }}
-        </span>
+      <div v-if="isLogin">
+        <div clsas="d-flex flex-column">
+          <span class="d-flex" style="color: #fff">
+            <v-icon color="white"
+              >mdi-wallet-outline</v-icon
+            >
+            目前余额 {{ balance }}
+            <v-btn
+              icon="mdi-refresh"
+              variant="text"
+              size="xs"
+              @click="getPlayerInfo"
+            ></v-btn>
+          </span>
+          <span class="d-flex" style="color: #fff">
+            <v-icon>mdi-wallet-outline</v-icon>
+            冻结余额 {{ balance_frozen }}
+          </span>
+        </div>
       </div>
 
       <v-menu
+        v-if="isLogin"
         v-model="menu"
         :close-on-content-click="false"
         location="end"
         height="80vh"
       >
         <template v-slot:activator="{ props }">
-          <!-- <v-avatar color="brown" size="large">
-          
-        </v-avatar> -->
           <v-avatar v-bind="props">
             <v-img
               size="large"
