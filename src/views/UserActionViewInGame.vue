@@ -245,7 +245,20 @@ onMounted(() => {
     </v-dialog>
 
     <div v-if="!isLogin">
-      <div
+      <div class="please-login">
+        点击下方按钮登录，随后请在 Telegram 中确认授权。
+        <div class="mt-4">
+          <v-btn
+            rounded="xl"
+            class="mr-4"
+            @click="telegramLogin"
+          >
+            <v-icon>mdi-arrow-up-thin</v-icon>
+            登录
+          </v-btn>
+        </div>
+      </div>
+      <!-- <div
         @click="telegramLogin"
         class="cursor-pointer user-area mb-1"
       >
@@ -256,7 +269,7 @@ onMounted(() => {
           <span>/</span>
           注册后查看
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div v-else>
@@ -273,6 +286,14 @@ onMounted(() => {
         <v-col align="end">
           <v-btn variant="text" @click="handleClose">
             <v-icon>mdi-close-circle-outline</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col align="end">
+          <v-btn
+            variant="text"
+            @click="userStore.handleLogout()"
+          >
+            <v-icon>mdi-logout</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -330,5 +351,11 @@ onMounted(() => {
 <style scoped>
 .caption {
   font-size: 12px;
+}
+.please-login {
+  margin-top: 2rem;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid;
 }
 </style>

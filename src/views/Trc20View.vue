@@ -97,9 +97,16 @@ const loginFail = () => {
 
       <iframe v-if="isLogin" :src="lobby_url" />
       <div class="please-login" v-else>
-        點擊下方按鈕登入，隨後請在 Telegram 中確認授權。
+        点击下方按钮登录，随后请在 Telegram 中确认授权。
         <div>
-          <v-button @click="telegramLogin"> 登入 </v-button>
+          <v-btn
+            rounded="xl"
+            class="mr-4"
+            @click="telegramLogin"
+          >
+            <v-icon>mdi-arrow-up-thin</v-icon>
+            登录
+          </v-btn>
         </div>
       </div>
     </div>
