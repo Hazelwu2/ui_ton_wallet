@@ -214,6 +214,11 @@ onMounted(() => {
 
 <template>
   <v-container>
+    <div
+      v-if="!isLogin"
+      id="telegram-login-container"
+      class="align-center d-none"
+    />
     <!-- Alert -->
     <Alert
       class="alert"
