@@ -73,10 +73,10 @@ const loginFail = () => {
         :icon="dialogStore.icon"
         :text="dialogStore.text"
       />
-      <AppNavbar />
+      <!-- <AppNavbar /> -->
 
       <!-- 存款、取款、個人資料燈箱 Start -->
-      <v-dialog v-model="showDepositDialog" max-width="600">
+      <!-- <v-dialog v-model="showDepositDialog" max-width="600">
         <DepositDialog />
       </v-dialog>
 
@@ -92,11 +92,16 @@ const loginFail = () => {
         max-width="600"
       >
         <ProfileDialog />
-      </v-dialog>
+      </v-dialog> -->
       <!-- 存款、取款、個人資料燈箱 End -->
 
       <iframe v-if="isLogin" :src="lobby_url" />
-      <div @click="telegramLogin" v-else>請先登入</div>
+      <div class="please-login" v-else>
+        點擊下方按鈕登入，隨後請在 Telegram 中確認授權。
+        <div>
+          <v-button @click="telegramLogin"> 登入 </v-button>
+        </div>
+      </div>
     </div>
   </main>
 </template>
@@ -106,6 +111,11 @@ const loginFail = () => {
   display: flex;
   flex-direction: column;
   height: 100vh; /* Fill the entire viewport height */
+}
+.please-login {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid;
 }
 
 iframe {
