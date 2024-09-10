@@ -214,11 +214,11 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
   <v-container class="d-flex justify-space-between">
     <nav>
       <!-- Telegram 按鈕會被動態載入並插入在這 -->
-      <div
+      <!-- <div
         v-if="!isLogin"
         id="telegram-login-container"
         class="align-center d-none"
-      />
+      /> -->
 
       <!-- Telegram 按鈕 End -->
       <div v-if="isLogin">

@@ -13,7 +13,7 @@ import type {
 // Utils
 import { handleResponse } from '@/utils/axios/resUtils'
 import {
-  loadTelegramWidget,
+  // loadTelegramWidget,
   usingCodeToGetAccessToken
 } from '@/utils/telegram/telegramLogin'
 import { ref, onMounted } from 'vue'
@@ -200,7 +200,7 @@ const telegramLogin = async () => {
 
 onMounted(() => {
   // 載入 Telegram 第三方登入
-  loadTelegramWidget()
+  // loadTelegramWidget()
 
   if (isLogin.value) {
     getPlayerInfo()
@@ -216,11 +216,6 @@ onMounted(() => {
 
 <template>
   <v-container>
-    <div
-      v-if="!isLogin"
-      id="telegram-login-container"
-      class="align-center d-none"
-    />
     <!-- Alert -->
     <Alert
       class="alert"

@@ -1,14 +1,15 @@
 <script setup lang="ts">
 // Component
-import AppNavbar from '@/components/AppNavbar.vue'
+// import AppNavbar from '@/components/AppNavbar.vue'
 // Utils
 import { handleResponse } from '@/utils/axios/resUtils'
 import message from '@/utils/message'
+import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
 // Dialog
 import Alert from '@/components/Dialog/ShowAlert.vue'
-import DepositDialog from '@/components/Dialog/DepositDialog.vue'
-import WithdrawalDialog from '@/components/Dialog/WithdrawalDialog.vue'
-import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
+// import DepositDialog from '@/components/Dialog/DepositDialog.vue'
+// import WithdrawalDialog from '@/components/Dialog/WithdrawalDialog.vue'
+// import ProfileDialog from '@/components/Dialog/ProfileDialog.vue'
 // Pinia
 import { storeToRefs } from 'pinia'
 import { useDialogStore } from '@/stores/dialog'
@@ -23,10 +24,14 @@ const userStore = useUserStore()
 const { isLogin, lobby_url } = storeToRefs(userStore)
 const { showAlert } = dialogStore
 
-const { showDepositDialog, showWithdrawalDialog } =
-  storeToRefs(dialogStore)
+// const { showDepositDialog, showWithdrawalDialog } =
+//   storeToRefs(dialogStore)
 
 const telegramLogin = async () => {
+  if (!window.Telegram || !window.Telegram.Login) {
+    // 載入 Telegram 第三方登入
+    loadTelegramWidget()
+  }
   window.Telegram.Login.auth(
     {
       bot_id: import.meta.env.VITE_TELEGRAM_BOT_ID,
@@ -98,13 +103,14 @@ const loginFail = () => {
       <iframe v-if="isLogin" :src="lobby_url" />
       <div class="please-login" v-else>
         点击下方按钮登录，随后请在 Telegram 中确认授权。
-        <div>
+
+        <div class="mt-2">
           <v-btn
             rounded="xl"
             class="mr-4"
             @click="telegramLogin"
           >
-            <v-icon>mdi-arrow-up-thin</v-icon>
+            <v-icon>mdi-login</v-icon>
             登录
           </v-btn>
         </div>
@@ -120,6 +126,7 @@ const loginFail = () => {
   height: 100vh; /* Fill the entire viewport height */
 }
 .please-login {
+  margin-top: 2rem;
   padding: 20px;
   text-align: center;
   border: 1px solid;
