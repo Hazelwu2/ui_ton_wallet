@@ -199,9 +199,6 @@ const telegramLogin = async () => {
 }
 
 onMounted(() => {
-  // 載入 Telegram 第三方登入
-  // loadTelegramWidget()
-
   if (isLogin.value) {
     getPlayerInfo()
 

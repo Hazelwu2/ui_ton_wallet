@@ -59,6 +59,14 @@ const loginSuccess = () => {
     icon: 'done',
     text: message.login.success
   })
+  if (
+    window &&
+    window.location &&
+    lobby_url &&
+    lobby_url.value
+  ) {
+    window.location.href = lobby_url.value
+  }
 }
 
 const loginFail = () => {
@@ -100,8 +108,8 @@ const loginFail = () => {
       </v-dialog> -->
       <!-- 存款、取款、個人資料燈箱 End -->
 
-      <iframe v-if="isLogin" :src="lobby_url" />
-      <div class="please-login" v-else>
+      <!-- <iframe v-if="isLogin" :src="lobby_url" /> -->
+      <div class="please-login">
         点击下方按钮登录，随后请在 Telegram 中确认授权。
 
         <div class="mt-2">
