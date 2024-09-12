@@ -248,14 +248,10 @@ const handleMiniAppLogin = () => {
       <div class="please-login">
         点击下方按钮登录，随后请在 Telegram 中确认授权。
         <div class="mt-4">
-          <v-btn
-            v-if="$isTelegramMiniApp"
-            @click="handleMiniAppLogin"
-          >
+          <v-btn @click="handleMiniAppLogin">
             Mini App 登錄
           </v-btn>
           <v-btn
-            v-else
             rounded="xl"
             class="mr-4"
             @click="telegramLogin"

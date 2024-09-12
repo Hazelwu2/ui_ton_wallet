@@ -127,10 +127,7 @@ const handleMiniAppLogin = () => {
             <v-icon>mdi-login</v-icon>
             登录
           </v-btn>
-          <v-btn
-            v-if="$isTelegramMiniApp"
-            @click="handleMiniAppLogin"
-          >
+          <v-btn @click="handleMiniAppLogin">
             Mini App 登錄
           </v-btn>
         </div>
