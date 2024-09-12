@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getCurrentInstance } from 'vue'
 // Dialog
 import Alert from '@/components/Dialog/ShowAlert.vue'
 import DepositDialog from '@/components/Dialog/DepositDialog.vue'
@@ -25,6 +26,8 @@ import { WithdrawalSchema } from '@/utils/form/withdrawalSchema'
 import { ProfileSchema } from '@/utils/form/profileSchema'
 import message from '@/utils/message'
 
+const { proxy } = getCurrentInstance()!
+const $isTelegramMiniApp = proxy?.$isTelegramMiniApp
 // Pinia Vuex
 const dialogStore = useDialogStore()
 const { showAlert } = dialogStore
@@ -209,6 +212,11 @@ onMounted(() => {
 
   usingCodeToGetAccessToken()
 })
+
+const handleMiniAppLogin = () => {
+  const tg = window.Telegram.WebApp
+  tg.openTelegramLink('https://ui-ton-wallet.vercel.app/')
+}
 </script>
 
 <template>
@@ -241,6 +249,13 @@ onMounted(() => {
         点击下方按钮登录，随后请在 Telegram 中确认授权。
         <div class="mt-4">
           <v-btn
+            v-if="$isTelegramMiniApp"
+            @click="handleMiniAppLogin"
+          >
+            Mini App 登錄
+          </v-btn>
+          <v-btn
+            v-else
             rounded="xl"
             class="mr-4"
             @click="telegramLogin"
@@ -248,6 +263,7 @@ onMounted(() => {
             <v-icon>mdi-arrow-up-thin</v-icon>
             登录
           </v-btn>
+          <v-btn id="loginButton">使用 Telegram 登錄</v-btn>
         </div>
       </div>
       <!-- <div
