@@ -27,7 +27,7 @@ import { ProfileSchema } from '@/utils/form/profileSchema'
 import message from '@/utils/message'
 
 const { proxy } = getCurrentInstance()!
-const $isTelegramMiniApp = proxy?.$isTelegramMiniApp
+const $isTelegramMiniApp = proxy!.$isTelegramMiniApp
 // Pinia Vuex
 const dialogStore = useDialogStore()
 const { showAlert } = dialogStore

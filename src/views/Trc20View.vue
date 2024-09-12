@@ -25,7 +25,7 @@ const userStore = useUserStore()
 const { isLogin, lobby_url } = storeToRefs(userStore)
 const { showAlert } = dialogStore
 const { proxy } = getCurrentInstance()!
-const $isTelegramMiniApp = proxy?.$isTelegramMiniApp
+const $isTelegramMiniApp = proxy!.$isTelegramMiniApp
 // const { showDepositDialog, showWithdrawalDialog } =
 //   storeToRefs(dialogStore)
 

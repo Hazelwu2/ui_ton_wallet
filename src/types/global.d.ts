@@ -1,3 +1,4 @@
+import 'vue'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 
 declare global {
@@ -13,5 +14,11 @@ declare global {
       }
     },
     CsCashierClose?: () => void;
+  }
+}
+
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $isTelegramMiniApp: boolean
   }
 }
