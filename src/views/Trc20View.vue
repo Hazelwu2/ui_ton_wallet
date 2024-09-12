@@ -79,7 +79,7 @@ const loginFail = () => {
 }
 const handleMiniAppLogin = () => {
   const tg = window.Telegram.WebApp
-  tg.openTelegramLink('https://ui-ton-wallet.vercel.app/')
+  tg.openLink('https://ui-ton-wallet.vercel.app/')
 }
 </script>
 

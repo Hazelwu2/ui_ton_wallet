@@ -10,7 +10,7 @@ declare global {
       },
       WebApp: {
         ready(): void;
-        openTelegramLink(url): void
+        openLink(url): void
       }
     },
     CsCashierClose?: () => void;
