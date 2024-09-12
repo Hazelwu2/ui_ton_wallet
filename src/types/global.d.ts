@@ -10,7 +10,8 @@ declare global {
       },
       WebApp: {
         ready(): void;
-        openLink(url): void
+        openLink(url): void;
+        initData
       }
     },
     CsCashierClose?: () => void;

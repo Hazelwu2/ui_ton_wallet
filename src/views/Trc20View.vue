@@ -69,6 +69,20 @@ const loginSuccess = () => {
   ) {
     window.location.href = lobby_url.value
   }
+
+  initializeMiniApp()
+}
+
+const initializeMiniApp = () => {
+  const initData = window.Telegram.WebApp.initData
+  if (initData) {
+    try {
+      const data = JSON.parse(initData)
+    } catch (error) {
+      console.error('initializeMiniApp 發生錯誤')
+      console.error('Failed to parse initData', error)
+    }
+  }
 }
 
 const loginFail = () => {
