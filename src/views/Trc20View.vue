@@ -2,6 +2,7 @@
 // Component
 // import AppNavbar from '@/components/AppNavbar.vue'
 // Utils
+import { getCurrentInstance } from 'vue'
 import { handleResponse } from '@/utils/axios/resUtils'
 import message from '@/utils/message'
 import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
@@ -23,7 +24,8 @@ const userStore = useUserStore()
 
 const { isLogin, lobby_url } = storeToRefs(userStore)
 const { showAlert } = dialogStore
-
+const { proxy } = getCurrentInstance()!
+const $isTelegramMiniApp = proxy?.$isTelegramMiniApp
 // const { showDepositDialog, showWithdrawalDialog } =
 //   storeToRefs(dialogStore)
 
@@ -75,6 +77,10 @@ const loginFail = () => {
     text: '失敗'
   })
 }
+const handleMiniAppLogin = () => {
+  const tg = window.Telegram.WebApp
+  tg.openTelegramLink('https://ui-ton-wallet.vercel.app/')
+}
 </script>
 
 <template>
@@ -120,6 +126,12 @@ const loginFail = () => {
           >
             <v-icon>mdi-login</v-icon>
             登录
+          </v-btn>
+          <v-btn
+            v-if="$isTelegramMiniApp"
+            @click="handleMiniAppLogin"
+          >
+            Mini App 登錄
           </v-btn>
         </div>
       </div>
