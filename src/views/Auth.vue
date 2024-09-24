@@ -1,4 +1,8 @@
-<script lang="ts">
+<template>
+  <div>驗證登入中...</div>
+</template>
+
+<script lang="ts" setup>
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
