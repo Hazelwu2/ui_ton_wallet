@@ -5,6 +5,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 
 // Pinia Vuex
 const userStore = useUserStore()
@@ -31,8 +32,24 @@ onMounted(async () => {
     {} as Record<string, string>
   )
 
+  /*
+    {
+      "id": "358617252",
+      "first_name": "Hazel",
+      "username": "heerherw",
+      "photo_url": "https://t.me/i/userpic/320/GeahPT2_TZEl-DY82bJ2qc6njc-O3-D2N1ERwJqzN6w.jpg",
+      "auth_date": "1727161596"
+    }
+  */
+
   console.log('userData', userData)
 
-  // await handleRegister(userData)
+  await handleRegister({
+    id: userData.id,
+    first_name: userData.first_name,
+    username: userData.username,
+    photo_url: userData.photo_url
+    // 添加其他必要的屬性
+  } as TelegramUserData)
 })
 </script>
