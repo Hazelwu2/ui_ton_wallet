@@ -4,12 +4,23 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue'
+// Utils
+import message from '@/utils/message'
+import { handleResponse } from '@/utils/axios/resUtils'
+// Pinia
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/user'
+import { useDialogStore } from '@/stores/dialog'
+// Type
+import type { PlayerRegisterResponse } from '@/api/player'
 import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 
 // Pinia Vuex
 const userStore = useUserStore()
+const dialogStore = useDialogStore()
 const { handleRegister } = userStore
+const { showAlert } = dialogStore
+const { lobby_url } = storeToRefs(userStore)
 
 onMounted(async () => {
   const urlParams = new URLSearchParams(
@@ -42,14 +53,36 @@ onMounted(async () => {
     }
   */
 
-  console.log('userData', userData)
-
-  await handleRegister({
+  const res = (await handleRegister({
     id: userData.id,
     first_name: userData.first_name,
     username: userData.username,
     photo_url: userData.photo_url
     // 添加其他必要的屬性
-  } as TelegramUserData)
+  } as TelegramUserData)) as PlayerRegisterResponse
+
+  handleResponse(res, loginSuccess, loginFail)
 })
+
+const loginSuccess = () => {
+  showAlert({
+    icon: 'done',
+    text: message.login.success
+  })
+  if (
+    window &&
+    window.location &&
+    lobby_url &&
+    lobby_url.value
+  ) {
+    window.location.href = lobby_url.value
+  }
+}
+
+const loginFail = () => {
+  showAlert({
+    icon: 'fail',
+    text: '登入失败，请重新透过 Telegram 机器人登入'
+  })
+}
 </script>
