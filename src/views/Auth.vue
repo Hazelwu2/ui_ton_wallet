@@ -32,6 +32,8 @@ onMounted(async () => {
 
   console.error('tg', tg)
   console.error('initData', initData)
+  console.error('tg.initData')
+  console.log(tg.initData)
 
   // 擷取 query 參數
   const queryKeys = [
@@ -48,6 +50,8 @@ onMounted(async () => {
     },
     {} as Record<string, string>
   )
+
+  console.log('userData', userData)
   const res = (await handleRegister({
     id: userData.id,
     first_name: userData.first_name,
