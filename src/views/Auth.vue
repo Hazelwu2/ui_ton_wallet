@@ -22,10 +22,16 @@ const { handleRegister } = userStore
 const { showAlert } = dialogStore
 const { lobby_url } = storeToRefs(userStore)
 
+const tg = window.Telegram.WebApp
+const initData = tg.initData
+
 onMounted(async () => {
   const urlParams = new URLSearchParams(
     window.location.search
   )
+
+  console.error('tg', tg)
+  console.error('initData', initData)
 
   // 擷取 query 參數
   const queryKeys = [
@@ -42,17 +48,6 @@ onMounted(async () => {
     },
     {} as Record<string, string>
   )
-
-  /*
-    {
-      "id": "358617252",
-      "first_name": "Hazel",
-      "username": "heerherw",
-      "photo_url": "https://t.me/i/userpic/320/GeahPT2_TZEl-DY82bJ2qc6njc-O3-D2N1ERwJqzN6w.jpg",
-      "auth_date": "1727161596"
-    }
-  */
-
   const res = (await handleRegister({
     id: userData.id,
     first_name: userData.first_name,
