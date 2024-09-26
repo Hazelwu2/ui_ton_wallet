@@ -213,10 +213,34 @@ onMounted(() => {
   usingCodeToGetAccessToken()
 })
 
-const handleMiniAppLogin = () => {
-  const tg = window.Telegram.WebApp
-  tg.openLink('https://ui-ton-wallet.vercel.app/')
-}
+onMounted(async () => {
+  const urlParams = new URLSearchParams(
+    window.location.search
+  )
+
+  // 擷取 query 參數
+  const queryKeys = ['account']
+  const userData = queryKeys.reduce(
+    (acc, key) => {
+      acc[key] = urlParams.get(key) || ''
+      return acc
+    },
+    {} as Record<string, string>
+  )
+
+  console.error('userData')
+  console.log(userData)
+
+  const params = {
+    m_code: import.meta.env.VITE_M_CODE,
+    account: userData.account,
+    // 預設密碼寫死
+    password: import.meta.env.VITE_PLAYER_PASSWORD
+  }
+  const res = await userStore.handleLogin(params)
+  console.log('res')
+  console.log(res)
+})
 </script>
 
 <template>
@@ -245,35 +269,7 @@ const handleMiniAppLogin = () => {
     </v-dialog>
 
     <div v-if="!isLogin">
-      <div class="please-login">
-        点击下方按钮登录，随后请在 Telegram 中确认授权。
-        <div class="mt-4">
-          <v-btn @click="handleMiniAppLogin">
-            Mini App 登錄
-          </v-btn>
-          <v-btn
-            rounded="xl"
-            class="mr-4"
-            @click="telegramLogin"
-          >
-            <v-icon>mdi-arrow-up-thin</v-icon>
-            登录
-          </v-btn>
-          <v-btn id="loginButton">使用 Telegram 登錄</v-btn>
-        </div>
-      </div>
-      <!-- <div
-        @click="telegramLogin"
-        class="cursor-pointer user-area mb-1"
-      >
-        <div class="text-caption">您还未登录</div>
-        <div color="info">
-          <v-icon>mdi-login</v-icon>
-          登录
-          <span>/</span>
-          注册后查看
-        </div>
-      </div> -->
+      <div class="please-login">驗證登入中...</div>
     </div>
 
     <div v-else>
@@ -290,14 +286,6 @@ const handleMiniAppLogin = () => {
         <v-col align="end">
           <v-btn variant="text" @click="handleClose">
             <v-icon>mdi-close-circle-outline</v-icon>
-          </v-btn>
-        </v-col>
-        <v-col align="end">
-          <v-btn
-            variant="text"
-            @click="userStore.handleLogout()"
-          >
-            <v-icon>mdi-logout</v-icon>
           </v-btn>
         </v-col>
       </v-row>
