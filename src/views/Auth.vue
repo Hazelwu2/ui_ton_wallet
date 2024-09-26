@@ -57,7 +57,6 @@ onMounted(async () => {
     first_name: userData.first_name,
     username: userData.username,
     photo_url: userData.photo_url
-    // 添加其他必要的屬性
   } as TelegramUserData)) as PlayerRegisterResponse
 
   handleResponse(res, loginSuccess, loginFail)
