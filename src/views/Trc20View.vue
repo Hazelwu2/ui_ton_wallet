@@ -2,7 +2,6 @@
 // Component
 // import AppNavbar from '@/components/AppNavbar.vue'
 // Utils
-import { getCurrentInstance } from 'vue'
 import { handleResponse } from '@/utils/axios/resUtils'
 import message from '@/utils/message'
 import { loadTelegramWidget } from '@/utils/telegram/telegramLogin'
@@ -24,8 +23,6 @@ const userStore = useUserStore()
 
 const { isLogin, lobby_url } = storeToRefs(userStore)
 const { showAlert } = dialogStore
-const { proxy } = getCurrentInstance()!
-const $isTelegramMiniApp = proxy!.$isTelegramMiniApp
 // const { showDepositDialog, showWithdrawalDialog } =
 //   storeToRefs(dialogStore)
 
@@ -69,20 +66,6 @@ const loginSuccess = () => {
   ) {
     window.location.href = lobby_url.value
   }
-
-  initializeMiniApp()
-}
-
-const initializeMiniApp = () => {
-  const initData = window.Telegram.WebApp.initData
-  if (initData) {
-    try {
-      const data = JSON.parse(initData)
-    } catch (error) {
-      console.error('initializeMiniApp 發生錯誤')
-      console.error('Failed to parse initData', error)
-    }
-  }
 }
 
 const loginFail = () => {
@@ -90,10 +73,6 @@ const loginFail = () => {
     icon: 'fail',
     text: '失敗'
   })
-}
-const handleMiniAppLogin = () => {
-  const tg = window.Telegram.WebApp
-  tg.openLink('https://ui-ton-wallet.vercel.app/')
 }
 </script>
 
@@ -141,9 +120,9 @@ const handleMiniAppLogin = () => {
             <v-icon>mdi-login</v-icon>
             登录
           </v-btn>
-          <v-btn @click="handleMiniAppLogin">
+          <!-- <v-btn @click="handleMiniAppLogin">
             Mini App 登錄
-          </v-btn>
+          </v-btn> -->
         </div>
       </div>
     </div>
