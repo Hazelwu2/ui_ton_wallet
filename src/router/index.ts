@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import Trc20View from '../views/Trc20View.vue'
 import UserActionViewInGame from '../views/UserActionViewInGame.vue'
 import Auth from '../views/Auth.vue'
+import MiniApp from '../views/MiniApp.vue'
 
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/auth',
       name: 'auth',
       component: Auth
+    },
+    {
+      path: '/mini-app',
+      name: 'mini-app',
+      component: MiniApp
     },
     {
       path: '/stock',
