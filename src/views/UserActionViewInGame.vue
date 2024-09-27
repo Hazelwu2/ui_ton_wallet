@@ -207,7 +207,7 @@ const handleCashierClose = () => {
 }
 
 onMounted(async () => {
-  ;(window as any).CsCashierClose = () => {
+  window.CsCashierClose = () => {
     console.log('start to call postMessage')
     window.parent.postMessage('cs_cashier_close', {})
     console.log('call postMessage already!, latest version')
