@@ -159,8 +159,11 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
 const handleClose = () => {
   console.error('click post message update')
 
-  window.parent.postMessage('cs_cashier_close', {})
-  console.log(window.parent)
+  // window.parent.postMessage('cs_cashier_close', {})
+}
+
+window.CsCashierClose = () => {
+  window.parent.postMessage('cs_cashier_close', '')
 }
 
 const loginSuccess = () => {
@@ -283,7 +286,7 @@ onMounted(async () => {
           <div class="cursor-pointer">{{ account }}</div>
         </v-col>
         <v-col align="end">
-          <v-btn variant="text" @click="handleClose">
+          <v-btn variant="text" @click="CsCashierClose()">
             <v-icon>mdi-close-circle-outline</v-icon>
           </v-btn>
         </v-col>
