@@ -158,7 +158,8 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
 // 在遊戲畫面內呼叫 Post Message 呼叫遊戲前端
 const handleClose = () => {
   console.error('click post message update')
-
+  window.parent.postMessage('cs_cashier_close', '')
+  console.error('click post message already')
   // window.parent.postMessage('cs_cashier_close', {})
 }
 
@@ -199,7 +200,13 @@ const telegramLogin = async () => {
   )
 }
 
-onMounted(() => {
+onMounted(async () => {
+  ;(window as any).CsCashierClose = () => {
+    console.log('start to call postMessage')
+    window.parent.postMessage('cs_cashier_close', '')
+    console.log('call postMessage already!, latest version')
+  }
+
   if (isLogin.value) {
     getPlayerInfo()
 
@@ -209,15 +216,6 @@ onMounted(() => {
   }
 
   usingCodeToGetAccessToken()
-
-  ;(window as any).CsCashierClose = () => {
-    console.log('start to call postMessage')
-    window.parent.postMessage('cs_cashier_close', '')
-    console.log('call postMessage already!, latest version')
-  }
-})
-
-onMounted(async () => {
   const urlParams = new URLSearchParams(
     window.location.search
   )
@@ -232,8 +230,8 @@ onMounted(async () => {
     {} as Record<string, string>
   )
 
-  console.error('userData')
-  console.log(userData)
+  // console.error('userData')
+  // console.log(userData)
 
   const params = {
     m_code: import.meta.env.VITE_M_CODE,
@@ -241,9 +239,8 @@ onMounted(async () => {
     // 預設密碼寫死
     password: import.meta.env.VITE_PLAYER_PASSWORD
   }
-  const res = await userStore.handleLogin(params)
-  console.log('res')
-  console.log(res)
+  // 登入
+  await userStore.handleLogin(params)
 })
 </script>
 
@@ -288,7 +285,7 @@ onMounted(async () => {
           <div class="cursor-pointer">{{ account }}</div>
         </v-col>
         <v-col align="end">
-          <v-btn variant="text" @click="CsCashierClose()">
+          <v-btn variant="text" @click="handleClose()">
             <v-icon>mdi-close-circle-outline</v-icon>
           </v-btn>
         </v-col>
