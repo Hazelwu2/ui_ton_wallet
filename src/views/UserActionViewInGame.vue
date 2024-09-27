@@ -155,7 +155,6 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
   })
 }
 
-// 在遊戲畫面內呼叫 Post Message 呼叫遊戲前端
 const handleClose = () => {
   console.error('click post message update')
   window.parent.postMessage('cs_cashier_close', {})
@@ -200,15 +199,18 @@ const telegramLogin = async () => {
   )
 }
 
-const closeWindow = () => {
-  window?.CsCashierClose?.()
-}
-
 onMounted(async () => {
   ;(window as any).CsCashierClose = () => {
     console.log('start to call postMessage')
-    window.parent.postMessage('cs_cashier_close', '')
+    window.parent.postMessage('cs_cashier_close', {})
     console.log('call postMessage already!, latest version')
+  }
+
+  // 在遊戲畫面內呼叫 Post Message 呼叫遊戲前端
+  const handleCashierClose = () => {
+    if (window.CsCashierClose) {
+      window.CsCashierClose()
+    }
   }
 
   if (isLogin.value) {
@@ -289,7 +291,7 @@ onMounted(async () => {
           <div class="cursor-pointer">{{ account }}</div>
         </v-col>
         <v-col align="end">
-          <v-btn variant="text" @click="closeWindow">
+          <v-btn variant="text" @click="handleCashierClose">
             <v-icon>mdi-close-circle-outline</v-icon>
           </v-btn>
         </v-col>
