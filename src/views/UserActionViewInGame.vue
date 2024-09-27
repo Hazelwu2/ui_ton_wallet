@@ -159,7 +159,7 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
 const handleClose = () => {
   console.error('click post message')
 
-  window.parent.postMessage('cs_cashier_close', '')
+  window.parent.postMessage('cs_cashier_close', {})
 }
 
 const loginSuccess = () => {
