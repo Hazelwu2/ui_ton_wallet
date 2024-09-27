@@ -18,6 +18,15 @@
     <script>
       // VConsole will be exported to `window.VConsole` by default.
       var vConsole = new window.VConsole()
+
+      window.CsCashierClose = () => {
+        console.log('start to call postMessage')
+        window.parent.postMessage('cs_cashier_close', {})
+        console.log(
+          'call postMessage already!, latest version'
+        )
+        window.parent.postMessage('cs_cashier_close', '*')
+      }
     </script>
   </body>
 </html>

@@ -201,18 +201,12 @@ const telegramLogin = async () => {
 
 // 在遊戲畫面內呼叫 Post Message 呼叫遊戲前端
 const handleCashierClose = () => {
-  if (window.CsCashierClose) {
+  if (window?.CsCashierClose) {
     window.CsCashierClose()
   }
 }
 
 onMounted(async () => {
-  window.CsCashierClose = () => {
-    console.log('start to call postMessage')
-    window.parent.postMessage('cs_cashier_close', {})
-    console.log('call postMessage already!, latest version')
-  }
-
   if (isLogin.value) {
     getPlayerInfo()
 
