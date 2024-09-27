@@ -163,7 +163,9 @@ const handleClose = () => {
 }
 
 window.CsCashierClose = () => {
+  console.log('start to call postMessage')
   window.parent.postMessage('cs_cashier_close', '')
+  console.log('call postMessage already!, latest version')
 }
 
 const loginSuccess = () => {
