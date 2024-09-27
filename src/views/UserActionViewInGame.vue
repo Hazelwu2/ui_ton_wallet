@@ -143,10 +143,10 @@ const getPlayerInfo = async () => {
 }
 
 const getPlayerInfoSuccess = () => {
-  showAlert({
-    icon: 'done',
-    text: '更新余额成功'
-  })
+  // showAlert({
+  //   icon: 'done',
+  //   text: '更新余额成功'
+  // })
 }
 const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
   showAlert({
