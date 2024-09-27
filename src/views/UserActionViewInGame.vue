@@ -157,9 +157,10 @@ const getPlayerInfoFail = (res: GetPlayerInfoResponse) => {
 
 // 在遊戲畫面內呼叫 Post Message 呼叫遊戲前端
 const handleClose = () => {
-  console.error('click post message')
+  console.error('click post message update')
 
   window.parent.postMessage('cs_cashier_close', {})
+  console.log(window.parent)
 }
 
 const loginSuccess = () => {
