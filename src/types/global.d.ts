@@ -1,9 +1,8 @@
-import 'vue'
-import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 
 declare global {
   interface Window {
-    onTelegramAuth: (user: TelegramUserData) => void
+    CsCashierClose?: () => void;
+    onTelegramAuth: (user: TelegramUserData) => void;
     Telegram: {
       Login: {
         auth(options: TelegramAuthOptions, callback: (data: TelegramUserData) => void): void
@@ -11,12 +10,14 @@ declare global {
       WebApp: {
         ready(): void;
         openLink(url): void;
-        initData
+        initData: any;
       }
     },
-    CsCashierClose?: () => void;
   }
 }
+
+import 'vue'
+import type { TelegramUserData } from '@/utils/telegram/telegramLogin'
 
 declare module 'vue' {
   interface ComponentCustomProperties {
