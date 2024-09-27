@@ -160,7 +160,7 @@ const handleClose = () => {
   console.error('click post message')
 
   window.CsCashierClose = () => {
-    window.parent.postMessage('cs_cashier_close', '')
+    window.parent.postMessage('cs_cashier_close', {})
   }
 }
 
