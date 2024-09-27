@@ -200,6 +200,10 @@ const telegramLogin = async () => {
   )
 }
 
+const closeWindow = () => {
+  window?.CsCashierClose?.()
+}
+
 onMounted(async () => {
   ;(window as any).CsCashierClose = () => {
     console.log('start to call postMessage')
@@ -285,7 +289,7 @@ onMounted(async () => {
           <div class="cursor-pointer">{{ account }}</div>
         </v-col>
         <v-col align="end">
-          <v-btn variant="text" @click="handleClose()">
+          <v-btn variant="text" @click="closeWindow">
             <v-icon>mdi-close-circle-outline</v-icon>
           </v-btn>
         </v-col>
