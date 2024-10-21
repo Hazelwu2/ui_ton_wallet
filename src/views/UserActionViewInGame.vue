@@ -273,64 +273,83 @@ onMounted(async () => {
       <div class="please-login">驗證登入中...</div>
     </div>
 
-    <div v-else>
-      <v-row align="center">
-        <v-avatar size="48" class="cursor-pointer">
+    <div v-else pa-4>
+      <v-row align="center" class="px-4">
+        <v-avatar size="64" class="cursor-pointer">
           <img
-            src="https://i.pravatar.cc/48"
+            src="https://i.pravatar.cc/64"
             alt="Profile Picture"
           />
         </v-avatar>
         <v-col>
-          <div class="cursor-pointer">{{ account }}</div>
+          <div class="text-h6 cursor-pointer">
+            {{ account }}
+          </div>
         </v-col>
         <v-col align="end">
-          <v-btn variant="text" @click="handleCashierClose">
+          <v-btn
+            size="large"
+            variant="text"
+            @click="handleCashierClose"
+          >
             <v-icon>mdi-close-circle-outline</v-icon>
           </v-btn>
         </v-col>
       </v-row>
 
       <!-- Display Balance -->
-      <v-row class="mt-6">
+      <v-row class="mt-8">
         <v-col col="12" align="center">
-          <h2 class="text-caption">
+          <!-- <h2 class="text-caption"> -->
+          <h2 class="text-subtitle-1 mb-2">
             余额 Balance
             <v-btn
               icon="mdi-refresh"
               variant="text"
-              size="xs"
+              size="small"
+              class="ml-2"
               @click="getPlayerInfo"
             />
           </h2>
-          <h1 class="text-white text-h4 font-weight-bold">
+          <!-- <h1 class="text-white text-h4 font-weight-bold"> -->
+          <h1 class="text-white text-h3 font-weight-bold">
             $ {{ balance }}
           </h1>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="mt-6">
         <v-col col="12" align="center">
-          <h2 class="text-caption">
+          <!-- <h2 class="text-caption"> -->
+          <h2 class="text-subtitle-1 mb-2">
             冻结余额 Freeze Balance
           </h2>
-          <h1 class="text-white text-h4 font-weight-bold">
+          <!-- <h1 class="text-white text-h4 font-weight-bold"> -->
+          <h1 class="text-white text-h3 font-weight-bold">
             $ {{ balance_frozen }}
           </h1>
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="mt-8">
         <v-col align="center">
           <div>
             <v-btn
               rounded="xl"
               class="mr-4"
+              size="x-large"
               @click="handleDeposit"
             >
-              <v-icon>mdi-arrow-up-thin</v-icon>
+              <v-icon size="24" class="mr-2">
+                mdi-arrow-up-thin
+              </v-icon>
               存款
             </v-btn>
-            <v-btn rounded="xl" @click="handleWithdrawal">
+            <v-btn
+              rounded="xl"
+              size="x-large"
+              class="px-6"
+              @click="handleWithdrawal"
+            >
               <v-icon>mdi-wallet-outline</v-icon>
               取款
             </v-btn>
