@@ -273,7 +273,7 @@ onMounted(async () => {
       <div class="please-login">驗證登入中...</div>
     </div>
 
-    <div v-else pa-4>
+    <div v-else pa-4 class="user">
       <v-row align="center" class="px-4">
         <v-avatar size="64" class="cursor-pointer">
           <img
@@ -351,7 +351,7 @@ onMounted(async () => {
               @click="handleWithdrawal"
             >
               <v-icon>mdi-wallet-outline</v-icon>
-              取款
+              取款2
             </v-btn>
           </div>
         </v-col>
@@ -369,5 +369,8 @@ onMounted(async () => {
   padding: 20px;
   text-align: center;
   border: 1px solid;
+}
+.v-container {
+  background: #121212;
 }
 </style>
