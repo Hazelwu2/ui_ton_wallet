@@ -351,7 +351,7 @@ onMounted(async () => {
               @click="handleWithdrawal"
             >
               <v-icon>mdi-wallet-outline</v-icon>
-              取款2
+              取款
             </v-btn>
           </div>
         </v-col>
@@ -372,5 +372,10 @@ onMounted(async () => {
 }
 .v-container {
   background: #121212;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
