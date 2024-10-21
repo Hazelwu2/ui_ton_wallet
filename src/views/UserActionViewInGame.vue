@@ -357,6 +357,7 @@ onMounted(async () => {
         </v-col>
       </v-row>
     </div>
+    \
   </v-container>
 </template>
 
@@ -377,5 +378,10 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+#app {
+  width: 100vw;
+  display: block;
+  max-width: 900px;
 }
 </style>
