@@ -379,6 +379,7 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
 }
+
 #app {
   width: 100vw;
   display: block;
@@ -386,6 +387,6 @@ onMounted(async () => {
 }
 
 .user {
-  transform: scale(1.4);
+  transform: scale(1.2);
 }
 </style>
