@@ -384,4 +384,8 @@ onMounted(async () => {
   display: block;
   max-width: 900px;
 }
+
+.user {
+  transform: scale(1.4);
+}
 </style>
