@@ -130,7 +130,7 @@ const calculateLoan = async () => {
 const fetchStockRealPrice = async (
   retryCount = 0,
   maxRetries = 10
-) => {
+): Promise<void> => {
   console.error('取得股價！')
   const dataest = 'dataset=TaiwanStockPrice'
   const date = 'YYYY-MM-DD'
