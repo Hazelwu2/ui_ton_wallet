@@ -110,13 +110,6 @@ const calculateLoan = async () => {
 維持率為 ${calculateLoanMaintenanceRate.value.toFixed(0)}%，當股票跌至 ${cutOffAmount.value.toFixed(2)} 元時，您將收到追繳通知。
     
 每月需支付利息約 ${monthlyInterest.value} 元。`
-    // dialogStore.showAlert({
-    //   icon: 'done',
-    //   text: `
-    //     股價總價格 ${totalPrice.value.toFixed(0)} 元，可借金額 ${loanAmount.value.toFixed(0)} 元，維持率為 ${calculateLoanMaintenanceRate.value.toFixed(0)} %。
-    //     跌到 ${cutOffAmount.value.toFixed(2)}，需要追繳錢
-    //     `
-    // })
   } else {
     showLoanAmount.value = false
     dialogStore.showAlert({
@@ -335,10 +328,11 @@ onMounted(() => {
                   clearable
                   outlined
                   @keydown.enter.stop
-                  @blur="
-                    () =>
-                      selectedStock && fetchStockRealPrice()
+                  @update:model-value="
+                    (val: string) =>
+                      val && fetchStockRealPrice()
                   "
+                  return-object
                 />
 
                 <!-- 股票現價 -->
